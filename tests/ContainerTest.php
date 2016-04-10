@@ -10,19 +10,18 @@
 
 namespace Stack\DI;
 
-use Stack\DI\Fixtures\Foo;
-
 class ContainerTest extends \PHPUnit_Framework_TestCase
 {
     const HELLO = 'hello';
+    const FOO = 'Stack\DI\Fixtures\Foo';
 
     public function testHas()
     {
         $container = new Container();
         $container->set('hi', ContainerTest::HELLO);
-        $container->get(Foo::class);
+        $container->get(ContainerTest::FOO);
 
-        $this->assertTrue($container->has(Foo::class));
+        $this->assertTrue($container->has(ContainerTest::FOO));
         $this->assertTrue($container->has('Foo'));
         $this->assertTrue($container->has('hi'));
         $this->assertFalse($container->has('Bar'));
@@ -44,10 +43,10 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $container->set(
             'Foo',
             function () {
-                return Foo::class;
+                return ContainerTest::FOO;
             }
         );
-        $container->get(Foo::class);
+        $container->get(ContainerTest::FOO);
 
         $this->assertTrue($container->has('Foo'));
     }
