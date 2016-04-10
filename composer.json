@@ -1,0 +1,31 @@
+{
+  "name": "devstackphp/di",
+  "description": "Stack DependencyInjection Component",
+  "type": "library",
+  "require": {
+    "php": ">=5.4",
+    "container-interop/container-interop": "~1.1"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~4.8",
+    "squizlabs/php_codesniffer": "~2.5.1"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Andrzej Kostrzewa",
+      "email": "andkos11@gmail.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "autoload": {
+    "psr-4": {
+      "Stack\\DI\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Stack\\DI\\": "tests/"
+    }
+  }
+}
