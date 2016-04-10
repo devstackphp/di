@@ -1,5 +1,5 @@
 {
-  "name": "devstackphp/di",
+  "name": "stack/di",
   "description": "Stack DependencyInjection Component",
   "type": "library",
   "require": {
