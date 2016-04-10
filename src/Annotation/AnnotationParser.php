@@ -68,7 +68,7 @@ final class AnnotationParser
 
         $annotations = [];
         foreach ($matches as $annotation) {
-            $annotationName = $namespace . strtolower($annotation[1]);
+            $annotationName = $namespace . $annotation[1];
             $value = true;
 
             if (isset($annotation[2])) {
@@ -191,6 +191,4 @@ final class AnnotationParser
 
         return $value;
     }
-
-
 }

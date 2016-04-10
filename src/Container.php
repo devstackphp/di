@@ -96,7 +96,13 @@ class Container implements ContainerInterface
     public function get($id)
     {
         $service = $id;
-        $serviceName = end(explode('\\', $service));
+        $getServiceName = function ($name) {
+            $service = explode('\\', $name);
+            return end($service);
+        };
+
+        $serviceName = $getServiceName($service);
+
         if ($this->has($serviceName)) {
             $this->useServiceFactory = false;
 
@@ -140,7 +146,12 @@ class Container implements ContainerInterface
             ));
         }
 
-        $serviceName = end(explode('\\', $id));
+        $getServiceName = function ($name) {
+            $service = explode('\\', $name);
+            return end($service);
+        };
+
+        $serviceName = $getServiceName($id);
 
         return isset($this->services[$serviceName]) || array_key_exists($serviceName, $this->services);
     }
