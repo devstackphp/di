@@ -35,12 +35,12 @@ class Autowiring extends DefinitionSource
             $constructor = $class->getConstructor();
 
             if ($constructor && $constructor->isPublic()) {
-                $parametersDefinitions = $this->getParametersDefinition($constructor);
-                if ($constructor->getNumberOfRequiredParameters() !== count($parametersDefinitions)) {
+                $parameters = $this->getParametersDefinition($constructor);
+                if ($constructor->getNumberOfRequiredParameters() !== count($parameters)) {
                     return;
                 }
 
-                $object = $class->newInstanceArgs($parametersDefinitions);
+                $object = $class->newInstanceArgs($parameters);
                 $this->set($name, $object);
 
                 return $object;

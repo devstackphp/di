@@ -136,10 +136,14 @@ class Annotation extends DefinitionSource
                 continue;
             }
 
+            $isMethod = true;
             if ($method->isConstructor()) {
                 $objectDefinition->setConstructorInjection($methodParameters);
                 $isConstructor = true;
-            } else {
+                $isMethod = false;
+            }
+
+            if($isMethod) {
                 $objectDefinition->addMethodInjection($method->getName(), $methodParameters);
                 $methodName[] = $method->getName();
             }

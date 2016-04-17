@@ -52,11 +52,11 @@ class PhpDocReader
     public function getMethodParameters(\ReflectionMethod $method)
     {
         $methodComment = $method->getDocComment();
-        if (preg_match_all('/@param\s+([^\s\*\/]+)/', $methodComment, $matches)) {
-            $classNames = end($matches);
-        } else {
+        if (!preg_match_all('/@param\s+([^\s\*\/]+)/', $methodComment, $matches)) {
             return;
         }
+        
+        $classNames = end($matches);
 
         $parameters = [];
         foreach ($classNames as $type) {
@@ -84,22 +84,22 @@ class PhpDocReader
     public function getPropertyClass(\ReflectionProperty $property)
     {
         $propertyComment = $property->getDocComment();
-        if (preg_match('/@var\s+([^\s\(\*\/]+)/', $propertyComment, $matches)) {
-            $className = end($matches);
-        } else {
+        if (!preg_match('/@var\s+([^\s\(\*\/]+)/', $propertyComment, $matches)) {
             return;
         }
+
+        $className = end($matches);
 
         if (in_array($className, self::$ignoredTypes)) {
             return;
         }
 
-        $classNameWithNamespace = $className;
-        if ($this->namespaceExists($classNameWithNamespace) === false) {
-            $classNameWithNamespace = $this->namespace.'\\'.$className;
+        $classWithNamespace = $className;
+        if ($this->namespaceExists($classWithNamespace) === false) {
+            $classWithNamespace = $this->namespace.'\\'.$className;
         }
 
-        if (!$this->classExists($classNameWithNamespace)) {
+        if (!$this->classExists($classWithNamespace)) {
             $declaringClass = $property->getDeclaringClass();
             throw new AnnotationException(sprintf(
                 'The @var annotation on %s::%s contains a non existent class "%s"',
@@ -116,13 +116,13 @@ class PhpDocReader
                 $values[] = $this->parseValue($value);
             }
 
-            $object = new ObjectDefinition($classNameWithNamespace, $className);
+            $object = new ObjectDefinition($classWithNamespace, $className);
             $object->setConstructorInjection($values);
 
             return $object;
         }
 
-        return new $classNameWithNamespace();
+        return new $classWithNamespace();
     }
 
     /**
