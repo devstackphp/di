@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Stack\DI\Definition;
 
 /**
@@ -41,12 +40,11 @@ class ObjectDefinition extends \stdClass
      */
     private $methodInjections = [];
 
-
     /**
      * ObjectDefinition constructor.
      *
-     * @param string $name Entry name
-     * @param null $className Class name
+     * @param string $name      Entry name
+     * @param null   $className Class name
      */
     public function __construct($name, $className = null)
     {
@@ -62,6 +60,7 @@ class ObjectDefinition extends \stdClass
         if ($this->className !== null) {
             return $this->className;
         }
+
         return $this->name;
     }
 

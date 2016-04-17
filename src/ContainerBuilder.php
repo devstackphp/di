@@ -7,9 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Stack\DI;
-
 
 use Interop\Container\ContainerInterface;
 use Stack\DI\Definition\Source\Annotation;
@@ -56,7 +54,7 @@ class ContainerBuilder
 
     /**
      * ContainerBuilder constructor.
-     * 
+     *
      * @param string $containerClass
      */
     public function __construct($containerClass = 'Stack\DI\Container')
@@ -77,7 +75,7 @@ class ContainerBuilder
 
         return $this;
     }
-    
+
     /**
      * Build and return a container.
      *

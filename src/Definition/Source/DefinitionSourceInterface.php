@@ -7,9 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Stack\DI\Definition\Source;
-
 
 /**
  * Source of definitions for entries of the container.
@@ -22,7 +20,7 @@ interface DefinitionSourceInterface
      * Returns the DI definition for the entry name.
      *
      * @param $name
-     * 
+     *
      * @return mixed|null|object
      */
     public function get($name);

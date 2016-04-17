@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Stack\DI;
 
 class ContainerTest extends \PHPUnit_Framework_TestCase
@@ -18,10 +17,10 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     public function testHas()
     {
         $container = ContainerBuilder::buildDevContainer();
-        $container->set('hi', ContainerTest::HELLO);
-        $container->get(ContainerTest::FOO);
- 
-        $this->assertTrue($container->has(ContainerTest::FOO));
+        $container->set('hi', self::HELLO);
+        $container->get(self::FOO);
+
+        $this->assertTrue($container->has(self::FOO));
         $this->assertTrue($container->has('Foo'));
         $this->assertTrue($container->has('Foo'));
         $this->assertTrue($container->has('hi'));
@@ -47,7 +46,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
                 return ContainerTest::FOO;
             }
         );
-        $container->get(ContainerTest::FOO);
+        $container->get(self::FOO);
 
         $this->assertTrue($container->has('Foo'));
     }
@@ -57,9 +56,9 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $container = ContainerBuilder::buildDevContainer();
         $container->set('Foo', null);
         $container->set('Bar', function () {
-            return null;
+
         });
-        
+
         $this->assertNull($container->get('Foo'));
         $this->assertNull($container->get('Bar'));
     }
@@ -69,8 +68,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $container = ContainerBuilder::buildDevContainer();
         $container->set('foo', 'bar');
         $container->get('foo');
-        $container->set('foo', ContainerTest::HELLO);
+        $container->set('foo', self::HELLO);
 
-        $this->assertSame(ContainerTest::HELLO, $container->get('foo'));
+        $this->assertSame(self::HELLO, $container->get('foo'));
     }
 }

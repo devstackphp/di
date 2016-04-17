@@ -7,9 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Stack\DI\Definition\Source;
-
 
 /**
  * Reads DI class definitions using reflection.
@@ -28,7 +26,7 @@ class Autowiring extends DefinitionSource
         }
 
         if (!class_exists($name) && !interface_exists($name)) {
-            return null;
+            return;
         }
 
         $autowiring = function ($name) {
@@ -39,7 +37,7 @@ class Autowiring extends DefinitionSource
             if ($constructor && $constructor->isPublic()) {
                 $parametersDefinitions = $this->getParametersDefinition($constructor);
                 if ($constructor->getNumberOfRequiredParameters() !== count($parametersDefinitions)) {
-                    return null;
+                    return;
                 }
 
                 $object = $class->newInstanceArgs($parametersDefinitions);
@@ -61,6 +59,7 @@ class Autowiring extends DefinitionSource
      * Get constructor parameters definitions.
      *
      * @param \ReflectionFunctionAbstract $constructor
+     *
      * @return array
      */
     public function getParametersDefinition(\ReflectionFunctionAbstract $constructor)
@@ -85,6 +84,7 @@ class Autowiring extends DefinitionSource
      * Get Class definition for constructor parameter.
      *
      * @param \ReflectionClass $parameterClass
+     *
      * @return mixed|null|object
      */
     private function getClassDefinition(\ReflectionClass $parameterClass)
@@ -98,6 +98,5 @@ class Autowiring extends DefinitionSource
         }
 
         return $argumentParams ? $this->get($parameterClassName) : new $parameterClassName();
-
     }
 }
