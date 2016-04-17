@@ -150,15 +150,15 @@ class Container implements ContainerInterface
     {
         $name = strtolower($name);
         $isClosure = false;
-        
+
         if ($value instanceof \Closure) {
             $this->useServiceFactory = true;
             $isClosure = true;
             $this->serviceFactory[$name] = $value;
             unset($this->services[$name]);
-        } 
-        
-        if(!$isClosure) {
+        }
+
+        if (!$isClosure) {
             $this->services[$name] = $value;
         }
     }

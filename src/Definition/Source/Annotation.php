@@ -143,7 +143,7 @@ class Annotation extends DefinitionSource
                 $isMethod = false;
             }
 
-            if($isMethod) {
+            if ($isMethod) {
                 $objectDefinition->addMethodInjection($method->getName(), $methodParameters);
                 $methodName[] = $method->getName();
             }
