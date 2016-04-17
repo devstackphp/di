@@ -71,37 +71,37 @@ class Container implements ContainerInterface
     /**
      * Finds an entry of the container by its identifier and returns it.
      *
-     * @param string $id Identifier of the entry to look for.
+     * @param string $name Identifier of the entry to look for.
      *
      * @throws NotFoundException  No entry was found for this identifier.
      * @throws ContainerException Error while retrieving the entry.
      *
      * @return mixed Entry.
      */
-    public function get($id)
+    public function get($name)
     {
-        $service = $id;
-        $id = strtolower($id);
+        $service = $name;
+        $name = strtolower($name);
 
-        if (!$this->hasAlias($id) && !$this->has($id)) {
-            $this->setAlias($id);
+        if (!$this->hasAlias($name) && !$this->has($name)) {
+            $this->setAlias($name);
         }
 
-        if ($this->hasAlias($id)) {
-            $id = $this->getAlias($id);
+        if ($this->hasAlias($name)) {
+            $name = $this->getAlias($name);
         }
 
-        if ($this->has($id)) {
+        if ($this->has($name)) {
             $this->useServiceFactory = false;
 
-            return $this->services[$id];
+            return $this->services[$name];
         }
 
         if ($this->useServiceFactory) {
-            $service = $this->getServiceFromFactory($id);
+            $service = $this->getServiceFromFactory($name);
 
             if ($this->definitionSource === null) {
-                $this->services[$id] = $service;
+                $this->services[$name] = $service;
 
                 return $service;
             }
@@ -109,32 +109,32 @@ class Container implements ContainerInterface
 
         if ($this->definitionSource !== null) {
             $service = $this->definitionSource->get($service);
-            $this->services[$id] = $service;
+            $this->services[$name] = $service;
 
             return $service;
         }
 
-        throw new ServiceNotFoundException('Service not found: '.$id);
+        throw new ServiceNotFoundException('Service not found: '.$name);
     }
 
     /**
      * Returns true if the container can return an entry for the given identifier.
      * Returns false otherwise.
      *
-     * @param string $id Identifier of the entry to look for.
+     * @param string $name Identifier of the entry to look for.
      *
      * @return boolean
      */
-    public function has($id)
+    public function has($name)
     {
-        if (!is_string($id)) {
+        if (!is_string($name)) {
             throw new \InvalidArgumentException(sprintf(
                 'The name parameter must be of type string, %s given',
-                is_object($id) ? get_class($id) : gettype($id)
+                is_object($name) ? get_class($name) : gettype($name)
             ));
         }
 
-        $serviceName = strtolower($id);
+        $serviceName = strtolower($name);
 
         if ($this->hasAlias($serviceName)) {
             $serviceName = $this->aliasDefinitions[$serviceName];
@@ -146,52 +146,52 @@ class Container implements ContainerInterface
     /**
      * Define an object in the container.
      *
-     * @param string $id Entry name
+     * @param string $name Entry name
      * @param mixed $value Value
      */
-    public function set($id, $value)
+    public function set($name, $value)
     {
-        $id = strtolower($id);
+        $name = strtolower($name);
         if ($value instanceof \Closure) {
             $this->useServiceFactory = true;
-            $this->serviceFactory[$id] = $value;
-            unset($this->services[$id]);
+            $this->serviceFactory[$name] = $value;
+            unset($this->services[$name]);
         } else {
-            $this->services[$id] = $value;
+            $this->services[$name] = $value;
         }
     }
 
     /**
-     * @param string $id
+     * @param string $name
      * 
      * @return mixed
      */
-    private function getAlias($id)
+    private function getAlias($name)
     {
-        if (!$this->hasAlias($id)) {
-            throw new \InvalidArgumentException(sprintf('The service alias "%s" does not exist.', $id));
+        if (!$this->hasAlias($name)) {
+            throw new \InvalidArgumentException(sprintf('The service alias "%s" does not exist.', $name));
         }
 
-        return $this->aliasDefinitions[$id];
+        return $this->aliasDefinitions[$name];
     }
 
     /**
-     * @param string $id
+     * @param string $name
      *
      * @return bool
      */
-    private function hasAlias($id)
+    private function hasAlias($name)
     {
-        return isset($this->aliasDefinitions[$id]);
+        return isset($this->aliasDefinitions[$name]);
     }
 
     /**
-     * @param string $id
+     * @param string $name
      */
-    private function setAlias($id)
+    private function setAlias($name)
     {
         $alias = new AliasDefinition();
-        $alias->aliasFromNamespace($id);
+        $alias->aliasFromNamespace($name);
 
         $this->aliasDefinitions[$alias->getTargetName()] = $alias->getName();
     }
@@ -199,15 +199,15 @@ class Container implements ContainerInterface
     /**
      * Get service from Closure object.
      *
-     * @param string $id
+     * @param string $name
      *
      * @return mixed
      */
-    private function getServiceFromFactory($id)
+    private function getServiceFromFactory($name)
     {
-        $serviceFactory = $this->serviceFactory[$id];
-        $containerToUseForDependencies = $this->delegateContainer ?: $this;
+        $serviceFactory = $this->serviceFactory[$name];
+        $delegateContainer = $this->delegateContainer ?: $this;
 
-        return $serviceFactory($containerToUseForDependencies);
+        return $serviceFactory($delegateContainer);
     }
 }
