@@ -55,7 +55,7 @@ class PhpDocReader
         if (!preg_match_all('/@param\s+([^\s\*\/]+)/', $methodComment, $matches)) {
             return;
         }
-        
+
         $classNames = end($matches);
 
         $parameters = [];
