@@ -10,11 +10,12 @@
 
 namespace Stack\DI;
 
+
 use Interop\Container\ContainerInterface;
 use Interop\Container\Exception\ContainerException;
 use Interop\Container\Exception\NotFoundException;
-use Stack\DI\Annotation\Annotation;
-use Stack\DI\Annotation\InjectableInterface;
+use Stack\DI\Definition\AliasDefinition;
+use Stack\DI\Definition\Source\DefinitionSourceInterface;
 use Stack\DI\Exception\ServiceNotFoundException;
 
 /**
@@ -40,18 +41,14 @@ class Container implements ContainerInterface
     private $delegateContainer;
 
     /**
-     * @var InjectableInterface
+     * @var DefinitionSourceInterface
      */
-    private $injectable;
+    private $definitionSource;
 
     /**
-     * @var bool
+     * @var array
      */
-    private $useAutowiring = true;
-    /**
-     * @var bool
-     */
-    private $useAnnotation = false;
+    private $aliasDefinitions = [];
 
     /**
      * @var bool
@@ -60,28 +57,16 @@ class Container implements ContainerInterface
 
     /**
      * Container constructor.
-     */
-    public function __construct()
-    {
-        $this->injectable = new Autowiring();
-    }
-
-    /**
-     * Add definitions to the container.
      *
-     * @param array $definition
-     * @return bool
+     * @param DefinitionSourceInterface $definitionSource
+     * @param ContainerInterface $delegateContainer
      */
-    public function addDefinitions(array $definition)
+    public function __construct(DefinitionSourceInterface $definitionSource, ContainerInterface $delegateContainer = null)
     {
-        if ($this->injectable !== null) {
-            $this->injectable->add($definition);
-
-            return true;
-        }
-
-        return false;
+        $this->definitionSource = $definitionSource;
+        $this->delegateContainer = $delegateContainer;
     }
+
 
     /**
      * Finds an entry of the container by its identifier and returns it.
@@ -96,33 +81,37 @@ class Container implements ContainerInterface
     public function get($id)
     {
         $service = $id;
-        $getServiceName = function ($name) {
-            $service = explode('\\', $name);
-            return end($service);
-        };
+        $id = strtolower($id);
 
-        $serviceName = $getServiceName($service);
+        if (!$this->hasAlias($id) && !$this->has($id)) {
+            $this->setAlias($id);
+        }
 
-        if ($this->has($serviceName)) {
+        if ($this->hasAlias($id)) {
+            $id = $this->getAlias($id);
+        }
+
+        if ($this->has($id)) {
             $this->useServiceFactory = false;
 
-            return $this->services[$serviceName];
+            return $this->services[$id];
         }
 
         if ($this->useServiceFactory) {
-            $service = $this->getServiceFromFactory($serviceName);
+            $service = $this->getServiceFromFactory($id);
 
-            if (!$this->useAnnotation && !$this->useAutowiring) {
-                $this->services[$serviceName] = $service;
+            if ($this->definitionSource === null) {
+                $this->services[$id] = $service;
 
-                return $this->services[$serviceName];
+                return $service;
             }
         }
 
-        if ($this->injectable !== null) {
-            $this->services[$serviceName] = $this->injectable->get($service);
+        if ($this->definitionSource !== null) {
+            $service = $this->definitionSource->get($service);
+            $this->services[$id] = $service;
 
-            return $this->services[$serviceName];
+            return $service;
         }
 
         throw new ServiceNotFoundException('Service not found: '.$id);
@@ -134,7 +123,6 @@ class Container implements ContainerInterface
      *
      * @param string $id Identifier of the entry to look for.
      *
-     * @throws \InvalidArgumentException The name parameter must be of type string.
      * @return boolean
      */
     public function has($id)
@@ -146,12 +134,11 @@ class Container implements ContainerInterface
             ));
         }
 
-        $getServiceName = function ($name) {
-            $service = explode('\\', $name);
-            return end($service);
-        };
+        $serviceName = strtolower($id);
 
-        $serviceName = $getServiceName($id);
+        if ($this->hasAlias($serviceName)) {
+            $serviceName = $this->aliasDefinitions[$serviceName];
+        }
 
         return isset($this->services[$serviceName]) || array_key_exists($serviceName, $this->services);
     }
@@ -164,6 +151,7 @@ class Container implements ContainerInterface
      */
     public function set($id, $value)
     {
+        $id = strtolower($id);
         if ($value instanceof \Closure) {
             $this->useServiceFactory = true;
             $this->serviceFactory[$id] = $value;
@@ -174,56 +162,50 @@ class Container implements ContainerInterface
     }
 
     /**
-     * Delegate the container for dependencies.
-     *
-     * @param ContainerInterface $delegateContainer
+     * @param string $id
+     * 
+     * @return mixed
      */
-    public function setDelegateContainer(ContainerInterface $delegateContainer)
+    private function getAlias($id)
     {
-        $this->delegateContainer = $delegateContainer;
+        if (!$this->hasAlias($id)) {
+            throw new \InvalidArgumentException(sprintf('The service alias "%s" does not exist.', $id));
+        }
+
+        return $this->aliasDefinitions[$id];
     }
 
     /**
-     * Enable or disable the use of autowiring to guess injections.
+     * @param string $id
      *
-     * Enabled by default.
-     *
-     * @param $bool
-     * @return $this
+     * @return bool
      */
-    public function useAutowiring($bool)
+    private function hasAlias($id)
     {
-        $this->useAutowiring = $bool;
-        $this->injectable = !$bool ? $this->injectable : new Autowiring();
-
-        return $this;
+        return isset($this->aliasDefinitions[$id]);
     }
 
     /**
-     * Enable or disable the use of annotations to guess injections.
-     *
-     * Disabled by default.
-     *
-     * @param $bool
-     * @return $this
+     * @param string $id
      */
-    public function useAnnotation($bool)
+    private function setAlias($id)
     {
-        $this->useAnnotation = $bool;
-        $this->injectable = $bool && $this->useAutowiring ? new Annotation() : null;
+        $alias = new AliasDefinition();
+        $alias->aliasFromNamespace($id);
 
-        return $this;
+        $this->aliasDefinitions[$alias->getTargetName()] = $alias->getName();
     }
 
     /**
      * Get service from Closure object.
      *
-     * @param $serviceId
+     * @param string $id
+     *
      * @return mixed
      */
-    private function getServiceFromFactory($serviceId)
+    private function getServiceFromFactory($id)
     {
-        $serviceFactory = $this->serviceFactory[$serviceId];
+        $serviceFactory = $this->serviceFactory[$id];
         $containerToUseForDependencies = $this->delegateContainer ?: $this;
 
         return $serviceFactory($containerToUseForDependencies);

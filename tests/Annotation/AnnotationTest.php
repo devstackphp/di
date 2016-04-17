@@ -10,22 +10,26 @@
 
 namespace Stack\DI\Annotation;
 
+use Stack\DI\Definition\Source\Annotation;
 use Stack\DI\Fixtures\AnnotationFixture;
 use Stack\DI\Fixtures\AnnotationFixture2;
 
 class AnnotationTest extends \PHPUnit_Framework_TestCase
 {
+    private $definitions = [];
+
     public function testUnknownClass()
     {
-        $source = new Annotation();
+        $source = new Annotation($this->definitions);
         $this->assertNull($source->get('foo'));
     }
 
     public function testProperty()
     {
-        $source = new Annotation();
+        $source = new Annotation($this->definitions);
         $definition = $source->get('Stack\DI\Fixtures\AnnotationFixture');
-        $annotationFixture = new AnnotationFixture(null, new AnnotationFixture2());
+        $annotationFixture = new AnnotationFixture('foo', new AnnotationFixture2(null, null));
+        $annotationFixture->setProperty3('bar');
         
         $this->assertEquals($annotationFixture, $definition);
     }

@@ -8,30 +8,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Stack\DI;
+namespace Stack\DI\Definition\Source;
 
-use Stack\DI\Annotation\InjectableInterface;
 
 /**
  * Reads DI class definitions using reflection.
  *
  * @author Andrzej Kostrzewa <andkos11@gmail.com>
  */
-final class Autowiring implements InjectableInterface
+class Autowiring extends DefinitionSource
 {
-    /**
-     * @var array
-     */
-    private $definitions = [];
-
-    /**
-     * {@inheritdoc}
-     */
-    public function add(array $definitions)
-    {
-        $this->definitions = $definitions;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -58,7 +44,7 @@ final class Autowiring implements InjectableInterface
 
                 $object = $class->newInstanceArgs($parametersDefinitions);
                 $this->set($name, $object);
-                
+
                 return $object;
             }
 
@@ -69,43 +55,6 @@ final class Autowiring implements InjectableInterface
         };
 
         return $autowiring($name);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function has($name)
-    {
-        return isset($this->definitions[$name]) || array_key_exists($name, $this->definitions);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function set($name, $value)
-    {
-        $this->definitions[$name] = $value;
-    }
-
-    /**
-     * Get Class definition for constructor parameter.
-     *
-     * @param \ReflectionClass $parameterClass
-     * @return mixed|null|object
-     */
-    private function getClassDefinition(\ReflectionClass $parameterClass)
-    {
-
-        $parameterClassName = $parameterClass->getName();
-        $entryReference = new \ReflectionClass($parameterClass->getName());
-        $argumentParams = false;
-
-        if ($entryReference->getConstructor()) {
-            $argumentParams = $entryReference->getConstructor()->getParameters();
-        }
-
-        return $argumentParams ? $this->get($parameterClassName) : new $parameterClassName();
-
     }
 
     /**
@@ -130,5 +79,25 @@ final class Autowiring implements InjectableInterface
         }
 
         return $parameters;
+    }
+
+    /**
+     * Get Class definition for constructor parameter.
+     *
+     * @param \ReflectionClass $parameterClass
+     * @return mixed|null|object
+     */
+    private function getClassDefinition(\ReflectionClass $parameterClass)
+    {
+        $parameterClassName = $parameterClass->getName();
+        $entryReference = new \ReflectionClass($parameterClass->getName());
+        $argumentParams = false;
+
+        if ($entryReference->getConstructor()) {
+            $argumentParams = $entryReference->getConstructor()->getParameters();
+        }
+
+        return $argumentParams ? $this->get($parameterClassName) : new $parameterClassName();
+
     }
 }

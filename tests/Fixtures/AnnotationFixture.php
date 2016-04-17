@@ -17,14 +17,20 @@ class AnnotationFixture
      */
     protected $property1;
     /**
-     * @var AnnotationFixture2
+     * @var AnnotationFixture2(1, 2)
      */
     protected $property2;
 
     /**
+     * @var string
+     */
+    private $property3;
+
+    /**
      * AnnotationFixture constructor.
-     * @param $property1
-     * @param $property2
+     *
+     * @param string(foo) $property1
+     * @param AnnotationFixture2 $property2
      */
     public function __construct($property1, AnnotationFixture2 $property2)
     {
@@ -32,5 +38,19 @@ class AnnotationFixture
         $this->property2 = $property2;
     }
 
+    /**
+     * @param string(bar) $property3
+     */
+    public function setProperty3($property3)
+    {
+        $this->property3 = $property3;
+    }
 
+    /**
+     * @return string
+     */
+    public function getProperty3()
+    {
+        return $this->property3;
+    }
 }

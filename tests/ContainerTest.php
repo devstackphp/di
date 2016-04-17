@@ -17,11 +17,12 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
 
     public function testHas()
     {
-        $container = new Container();
+        $container = ContainerBuilder::buildDevContainer();
         $container->set('hi', ContainerTest::HELLO);
         $container->get(ContainerTest::FOO);
-
+ 
         $this->assertTrue($container->has(ContainerTest::FOO));
+        $this->assertTrue($container->has('Foo'));
         $this->assertTrue($container->has('Foo'));
         $this->assertTrue($container->has('hi'));
         $this->assertFalse($container->has('Bar'));
@@ -33,13 +34,13 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function testHasNonStringParameter()
     {
-        $container = new Container();
+        $container = ContainerBuilder::buildDevContainer();
         $container->has(new \stdClass());
     }
 
     public function testSet()
     {
-        $container = new Container();
+        $container = ContainerBuilder::buildDevContainer();
         $container->set(
             'Foo',
             function () {
@@ -53,7 +54,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
 
     public function testSetNullValue()
     {
-        $container = new Container();
+        $container = ContainerBuilder::buildDevContainer();
         $container->set('Foo', null);
         $container->set('Bar', function () {
             return null;
@@ -65,7 +66,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
 
     public function testSetGetSetGet()
     {
-        $container = new Container();
+        $container = ContainerBuilder::buildDevContainer();
         $container->set('foo', 'bar');
         $container->get('foo');
         $container->set('foo', ContainerTest::HELLO);

@@ -8,17 +8,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Stack\DI\Fixtures;
+namespace Stack\DI\Exception;
 
-class AnnotationFixture2
+
+class AnnotationException extends \Exception
 {
 
-    /**
-     * AnnotationFixture2 constructor.
-     * @param $param1
-     * @param $param2
-     */
-    public function __construct($param1, $param2)
-    {
-    }
 }
