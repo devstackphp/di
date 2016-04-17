@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Stack\DI\Fixtures;
 
 class AnnotationFixture
@@ -29,7 +28,7 @@ class AnnotationFixture
     /**
      * AnnotationFixture constructor.
      *
-     * @param string(foo) $property1
+     * @param string(foo)        $property1
      * @param AnnotationFixture2 $property2
      */
     public function __construct($property1, AnnotationFixture2 $property2)

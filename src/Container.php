@@ -7,9 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Stack\DI;
-
 
 use Interop\Container\ContainerInterface;
 use Interop\Container\Exception\ContainerException;
@@ -59,14 +57,13 @@ class Container implements ContainerInterface
      * Container constructor.
      *
      * @param DefinitionSourceInterface $definitionSource
-     * @param ContainerInterface $delegateContainer
+     * @param ContainerInterface        $delegateContainer
      */
     public function __construct(DefinitionSourceInterface $definitionSource, ContainerInterface $delegateContainer = null)
     {
         $this->definitionSource = $definitionSource;
         $this->delegateContainer = $delegateContainer;
     }
-
 
     /**
      * Finds an entry of the container by its identifier and returns it.
@@ -123,7 +120,7 @@ class Container implements ContainerInterface
      *
      * @param string $name Identifier of the entry to look for.
      *
-     * @return boolean
+     * @return bool
      */
     public function has($name)
     {
@@ -146,8 +143,8 @@ class Container implements ContainerInterface
     /**
      * Define an object in the container.
      *
-     * @param string $name Entry name
-     * @param mixed $value Value
+     * @param string $name  Entry name
+     * @param mixed  $value Value
      */
     public function set($name, $value)
     {
@@ -163,7 +160,7 @@ class Container implements ContainerInterface
 
     /**
      * @param string $name
-     * 
+     *
      * @return mixed
      */
     private function getAlias($name)

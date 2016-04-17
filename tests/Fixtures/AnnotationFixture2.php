@@ -7,14 +7,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Stack\DI\Fixtures;
 
 class AnnotationFixture2
 {
-
     /**
      * AnnotationFixture2 constructor.
+     *
      * @param $param1
      * @param $param2
      */

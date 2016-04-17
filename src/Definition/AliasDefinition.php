@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Stack\DI\Definition;
 
 /**
@@ -33,8 +32,8 @@ class AliasDefinition
 
     /**
      * AliasDefinition constructor.
-     * 
-     * @param string $name Entry name
+     *
+     * @param string $name       Entry name
      * @param string $targetName Name of the target entry
      */
     public function __construct($name = null, $targetName = null)
@@ -45,7 +44,7 @@ class AliasDefinition
 
     /**
      * Extract name from target entry.
-     * 
+     *
      * @param $targetName
      */
     public function aliasFromNamespace($targetName)

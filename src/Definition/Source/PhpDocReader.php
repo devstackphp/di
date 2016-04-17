@@ -7,9 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Stack\DI\Definition\Source;
-
 
 use Stack\DI\Definition\ObjectDefinition;
 use Stack\DI\Exception\AnnotationException;
@@ -57,13 +55,13 @@ class PhpDocReader
         if (preg_match_all('/@param\s+([^\s\*\/]+)/', $methodComment, $matches)) {
             $classNames = end($matches);
         } else {
-            return null;
+            return;
         }
 
         $parameters = [];
         foreach ($classNames as $type) {
             $values = explode('(', $type);
-            if (in_array($values[0], PhpDocReader::$ignoredTypes)) {
+            if (in_array($values[0], self::$ignoredTypes)) {
                 $value = end($values);
                 $value = trim($value, ') ');
                 $type = $this->parseValue($value);
@@ -82,7 +80,6 @@ class PhpDocReader
      * @throws AnnotationException Non exists class.
      *
      * @return null|ObjectDefinition
-     *
      */
     public function getPropertyClass(\ReflectionProperty $property)
     {
@@ -90,16 +87,16 @@ class PhpDocReader
         if (preg_match('/@var\s+([^\s\(\*\/]+)/', $propertyComment, $matches)) {
             $className = end($matches);
         } else {
-            return null;
+            return;
         }
 
-        if (in_array($className, PhpDocReader::$ignoredTypes)) {
-            return null;
+        if (in_array($className, self::$ignoredTypes)) {
+            return;
         }
 
         $classNameWithNamespace = $className;
         if ($this->namespaceExists($classNameWithNamespace) === false) {
-            $classNameWithNamespace = $this->namespace . '\\' . $className;
+            $classNameWithNamespace = $this->namespace.'\\'.$className;
         }
 
         if (!$this->classExists($classNameWithNamespace)) {
@@ -125,7 +122,7 @@ class PhpDocReader
             return $object;
         }
 
-        return new $classNameWithNamespace;
+        return new $classNameWithNamespace();
     }
 
     /**
@@ -235,13 +232,11 @@ class PhpDocReader
         $classNamePosition = strpos($property, $className);
         if ($classNamePosition !== false) {
             $classNameLength = mb_strlen($className);
-            $property = ltrim(substr($property, $classNamePosition + $classNameLength ));
-            if (preg_match_all('/([\w,$\[\]\'\"]+)/', $property , $matches)) {
+            $property = ltrim(substr($property, $classNamePosition + $classNameLength));
+            if (preg_match_all('/([\w,$\[\]\'\"]+)/', $property, $matches)) {
                 return end($matches);
             }
         }
-
-        return null;
     }
 
     /**

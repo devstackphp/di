@@ -7,9 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Stack\DI\Definition\Source;
-
 
 use Stack\DI\Definition\ObjectDefinition;
 
@@ -39,7 +37,7 @@ class Annotation extends DefinitionSource
         }
 
         if (!class_exists($name) && !interface_exists($name)) {
-            return null;
+            return;
         }
 
         $class = new \ReflectionClass($name);
@@ -52,7 +50,6 @@ class Annotation extends DefinitionSource
         $this->set($name, $object);
 
         return $object;
-
     }
 
     /**
@@ -101,9 +98,9 @@ class Annotation extends DefinitionSource
      * Set Class property instance.
      *
      * @param \ReflectionProperty $property
-     * @param ObjectDefinition $objectDefinition
+     * @param ObjectDefinition    $objectDefinition
      * @param $namespace
-     * 
+     *
      * @throws \Stack\DI\Exception\AnnotationException
      */
     private function setProperty(\ReflectionProperty $property, ObjectDefinition $objectDefinition, $namespace)
@@ -179,7 +176,5 @@ class Annotation extends DefinitionSource
 
             return $methodParameters;
         }
-
-        return null;
     }
 }

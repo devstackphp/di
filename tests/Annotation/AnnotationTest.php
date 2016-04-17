@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Stack\DI\Annotation;
 
 use Stack\DI\Definition\Source\Annotation;
@@ -30,7 +29,7 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
         $definition = $source->get('Stack\DI\Fixtures\AnnotationFixture');
         $annotationFixture = new AnnotationFixture('foo', new AnnotationFixture2(null, null));
         $annotationFixture->setProperty3('bar');
-        
+
         $this->assertEquals($annotationFixture, $definition);
     }
 }
