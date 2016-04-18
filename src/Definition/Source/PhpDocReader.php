@@ -138,7 +138,7 @@ class PhpDocReader
     /**
      * @param string|false $className
      *
-     * @return integer
+     * @return int
      */
     private function namespaceExists($className)
     {
@@ -222,7 +222,7 @@ class PhpDocReader
     /**
      * Get property class parameters.
      *
-     * @param string $property
+     * @param string       $property
      * @param string|false $className
      *
      * @return array|null

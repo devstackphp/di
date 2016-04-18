@@ -29,7 +29,7 @@ class Autowiring extends DefinitionSource
             return;
         }
 
-        $autowiring = function($name) {
+        $autowiring = function ($name) {
             $class = new \ReflectionClass($name);
 
             $constructor = $class->getConstructor();
