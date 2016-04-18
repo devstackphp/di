@@ -14,7 +14,6 @@ use Interop\Container\Exception\ContainerException;
 use Interop\Container\Exception\NotFoundException;
 use Stack\DI\Definition\AliasDefinition;
 use Stack\DI\Definition\Source\DefinitionSourceInterface;
-use Stack\DI\Exception\ServiceNotFoundException;
 
 /**
  * Dependency Injection Container.
