@@ -38,7 +38,7 @@ class AliasDefinition
      */
     public function __construct($name = null, $targetName = null)
     {
-        $this->name = $name;
+        $this->name       = $name;
         $this->targetName = $targetName;
     }
 

@@ -27,8 +27,8 @@ class AutowiringTest extends \PHPUnit_Framework_TestCase
 
     public function testConstructor()
     {
-        $source = new Autowiring($this->definitions);
-        $definition = $source->get('Stack\DI\Fixtures\AutowiringFixture');
+        $source            = new Autowiring($this->definitions);
+        $definition        = $source->get('Stack\DI\Fixtures\AutowiringFixture');
         $autowiringFixture = new AutowiringFixture(new AutowiringFixture2());
 
         $this->assertEquals($autowiringFixture, $definition);
@@ -36,8 +36,8 @@ class AutowiringTest extends \PHPUnit_Framework_TestCase
 
     public function testConstructorInParentClass()
     {
-        $source = new Autowiring($this->definitions);
-        $definition = $source->get('Stack\DI\Fixtures\AutowiringFixtureChild');
+        $source                 = new Autowiring($this->definitions);
+        $definition             = $source->get('Stack\DI\Fixtures\AutowiringFixtureChild');
         $autowiringFixtureChild = new AutowiringFixtureChild(new AutowiringFixture2());
 
         $this->assertEquals($autowiringFixtureChild, $definition);
