@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Stack\DI\Definition\Source;
 
 use Stack\DI\Definition\ObjectDefinition;
@@ -49,7 +50,7 @@ class PhpDocReader
      *
      * @return array|null
      */
-    public function getMethodParameters (\ReflectionMethod $method)
+    public function getMethodParameters(\ReflectionMethod $method)
     {
         $methodComment = $method->getDocComment();
         if (!preg_match_all('/@param\s+([^\s\*\/]+)/', $methodComment, $matches)) {
@@ -85,7 +86,7 @@ class PhpDocReader
      *
      * @return null|ObjectDefinition
      */
-    public function getPropertyClass (\ReflectionProperty $property)
+    public function getPropertyClass(\ReflectionProperty $property)
     {
         $propertyComment = $property->getDocComment();
         if (!preg_match('/@var\s+([^\s\(\*\/]+)/', $propertyComment, $matches)) {
@@ -138,7 +139,7 @@ class PhpDocReader
      *
      * @return bool
      */
-    private function classExists ($className)
+    private function classExists($className)
     {
         return class_exists($className) || interface_exists($className);
     }
@@ -148,7 +149,7 @@ class PhpDocReader
      *
      * @return int
      */
-    private function namespaceExists ($className)
+    private function namespaceExists($className)
     {
         return strpos($className, $this->namespace);
     }
@@ -160,7 +161,7 @@ class PhpDocReader
      *
      * @return string
      */
-    protected static function parseValue ($value)
+    protected static function parseValue($value)
     {
         $value = trim($value, ', ');
 
@@ -235,7 +236,7 @@ class PhpDocReader
      *
      * @return string[]|false|null
      */
-    private function propertyClassParameters ($property, $className)
+    private function propertyClassParameters($property, $className)
     {
         $classNamePosition = strpos($property, $className);
         if ($classNamePosition !== false) {
@@ -252,7 +253,7 @@ class PhpDocReader
      *
      * @param $namespace
      */
-    public function setNamespace ($namespace)
+    public function setNamespace($namespace)
     {
         $this->namespace = $namespace;
     }

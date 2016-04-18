@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Stack\DI;
 
 use Interop\Container\ContainerInterface;
@@ -57,7 +58,7 @@ class ContainerBuilder
      *
      * @param string $containerClass
      */
-    public function __construct ($containerClass = 'Stack\DI\Container')
+    public function __construct($containerClass = 'Stack\DI\Container')
     {
         $this->containerClass = $containerClass;
     }
@@ -69,7 +70,7 @@ class ContainerBuilder
      *
      * @return $this
      */
-    public function addDefinitions (array $definitions)
+    public function addDefinitions(array $definitions)
     {
         $this->definitionSources = $definitions;
 
@@ -81,7 +82,7 @@ class ContainerBuilder
      *
      * @return Container
      */
-    public function build ()
+    public function build()
     {
         $definitionSource = null;
         if ($this->useAnnotation) {
@@ -100,7 +101,7 @@ class ContainerBuilder
      *
      * @return Container
      */
-    public static function buildDevContainer ()
+    public static function buildDevContainer()
     {
         $builder = new self();
 
@@ -116,7 +117,7 @@ class ContainerBuilder
      *
      * @return $this
      */
-    public function useAutowiring ($bool)
+    public function useAutowiring($bool)
     {
         $this->useAutowiring = $bool;
 
@@ -132,7 +133,7 @@ class ContainerBuilder
      *
      * @return $this
      */
-    public function useAnnotation ($bool)
+    public function useAnnotation($bool)
     {
         $this->useAnnotation = $bool;
 
@@ -146,7 +147,7 @@ class ContainerBuilder
      *
      * @return $this
      */
-    public function setDelegateContainer (ContainerInterface $delegateContainer)
+    public function setDelegateContainer(ContainerInterface $delegateContainer)
     {
         $this->delegateContainer = $delegateContainer;
 

@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Stack\DI\Definition\Source;
 
 /**
@@ -19,7 +20,7 @@ class Autowiring extends AbstractDefinitionSource
     /**
      * {@inheritdoc}
      */
-    public function get ($name)
+    public function get($name)
     {
         if ($this->has($name)) {
             return $this->definitions[$name];
@@ -62,7 +63,7 @@ class Autowiring extends AbstractDefinitionSource
      *
      * @return array
      */
-    public function getParametersDefinition (\ReflectionFunctionAbstract $constructor)
+    public function getParametersDefinition(\ReflectionFunctionAbstract $constructor)
     {
         $parameters = [];
 
@@ -87,7 +88,7 @@ class Autowiring extends AbstractDefinitionSource
      *
      * @return mixed|null|object
      */
-    private function getClassDefinition (\ReflectionClass $parameterClass)
+    private function getClassDefinition(\ReflectionClass $parameterClass)
     {
         $parameterClassName = $parameterClass->getName();
         $entryReference     = new \ReflectionClass($parameterClass->getName());
