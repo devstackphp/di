@@ -22,7 +22,7 @@ class PhpDocReader
     /**
      * @var array
      */
-    private static $ignoredTypes = [
+    protected static $ignoredTypes = [
         'bool',
         'boolean',
         'string',
@@ -160,7 +160,7 @@ class PhpDocReader
      *
      * @return string
      */
-    private static function parseValue($value)
+    protected static function parseValue($value)
     {
         $value = trim($value, ', ');
 
