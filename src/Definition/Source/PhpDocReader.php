@@ -113,7 +113,7 @@ class PhpDocReader
             ));
         }
 
-        $createNewObject = function ($propertyComment, $className, $classWithNamespace) {
+        $createNewObject = function($propertyComment, $className, $classWithNamespace) {
             $classParameters = $this->propertyClassParameters($propertyComment, $className);
             if (is_array($classParameters)) {
                 $values = [];
@@ -164,7 +164,7 @@ class PhpDocReader
     {
         $value = trim($value, ', ');
 
-        $isNumberOrBool = function (&$value) {
+        $isNumberOrBool = function(&$value) {
             if (is_numeric($value)) {
                 $value = (float) $value;
 
@@ -175,7 +175,7 @@ class PhpDocReader
                 return true;
             }
 
-            $isBool = function (&$value) {
+            $isBool = function(&$value) {
                 if (strtolower($value) == 'true') {
                     $value = true;
 
@@ -194,7 +194,7 @@ class PhpDocReader
             return $isBool($value);
         };
 
-        $isArrayOrOther = function (&$value) {
+        $isArrayOrOther = function(&$value) {
             if (substr($value, 0, 1) === '[' && substr($value, -1) === ']') {
                 $valuesArray = explode(',', substr($value, 1, -1));
                 $value = [];
