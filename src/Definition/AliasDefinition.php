@@ -34,8 +34,8 @@ class AliasDefinition
     /**
      * AliasDefinition constructor.
      *
-     * @param string $name       Entry name
-     * @param string $targetName Name of the target entry
+     * @param string|null $name       Entry name
+     * @param string|null $targetName Name of the target entry
      */
     public function __construct($name = null, $targetName = null)
     {
@@ -57,7 +57,7 @@ class AliasDefinition
     }
 
     /**
-     * @return string Entry name
+     * @return string|null Entry name
      */
     public function getName()
     {
@@ -65,7 +65,7 @@ class AliasDefinition
     }
 
     /**
-     * @return string Name of the target entry
+     * @return string|null Name of the target entry
      */
     public function getTargetName()
     {
