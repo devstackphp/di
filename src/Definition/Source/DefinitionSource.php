@@ -51,6 +51,10 @@ abstract class DefinitionSource implements DefinitionSourceInterface
      */
     public function has($name)
     {
+        if (!is_string($name)) {
+            return false;
+        }
+
         return isset($this->definitions[$name]) || array_key_exists($name, $this->definitions);
     }
 

@@ -58,8 +58,10 @@ class Container implements ContainerInterface
      * @param DefinitionSourceInterface $definitionSource
      * @param ContainerInterface        $delegateContainer
      */
-    public function __construct(DefinitionSourceInterface $definitionSource, ContainerInterface $delegateContainer = null)
-    {
+    public function __construct(
+        DefinitionSourceInterface $definitionSource,
+        ContainerInterface $delegateContainer = null
+    ) {
         $this->definitionSource = $definitionSource;
         $this->delegateContainer = $delegateContainer;
     }

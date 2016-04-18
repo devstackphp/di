@@ -65,10 +65,10 @@ class PhpDocReader
         $parameters = [];
         foreach ($classNames as $type) {
             $values = explode('(', $type);
-            if (in_array($values[0], self::$ignoredTypes)) {
+            if (in_array($values[0], static::$ignoredTypes)) {
                 $value = end($values);
                 $value = trim($value, ') ');
-                $type = $this->parseValue($value);
+                $type = static::parseValue($value);
             }
             $parameters[] = $type;
         }
@@ -94,11 +94,7 @@ class PhpDocReader
 
         $className = end($matches);
 
-        if (!is_string($className)) {
-            return;
-        }
-
-        if (in_array($className, self::$ignoredTypes)) {
+        if (!is_string($className) || in_array($className, static::$ignoredTypes)) {
             return;
         }
 
@@ -117,20 +113,24 @@ class PhpDocReader
             ));
         }
 
-        $classParameters = $this->propertyClassParameters($propertyComment, $className);
-        if (is_array($classParameters)) {
-            $values = [];
-            foreach ($classParameters as $value) {
-                $values[] = $this->parseValue($value);
+        $createNewObject = function ($propertyComment, $className, $classWithNamespace) {
+            $classParameters = $this->propertyClassParameters($propertyComment, $className);
+            if (is_array($classParameters)) {
+                $values = [];
+                foreach ($classParameters as $value) {
+                    $values[] = static::parseValue($value);
+                }
+
+                $object = new ObjectDefinition($classWithNamespace, $className);
+                $object->setConstructorInjection($values);
+
+                return $object;
             }
 
-            $object = new ObjectDefinition($classWithNamespace, $className);
-            $object->setConstructorInjection($values);
+            return new $classWithNamespace();
+        };
 
-            return $object;
-        }
-
-        return new $classWithNamespace();
+        return $createNewObject($propertyComment, $className, $classWithNamespace);
     }
 
     /**
@@ -160,7 +160,7 @@ class PhpDocReader
      *
      * @return string
      */
-    private function parseValue($value)
+    private static function parseValue($value)
     {
         $value = trim($value, ', ');
 
@@ -199,7 +199,7 @@ class PhpDocReader
                 $valuesArray = explode(',', substr($value, 1, -1));
                 $value = [];
                 foreach ($valuesArray as $val) {
-                    $value[] = self::parseValue($val);
+                    $value[] = static::parseValue($val);
                 }
 
                 return true;
@@ -208,7 +208,7 @@ class PhpDocReader
             if (substr($value, 0, 1) == '"' && substr($value, -1) == '"' ||
                 substr($value, 0, 1) == '\'' && substr($value, -1) == '\'') {
                 $value = substr($value, 1, -1);
-                $value = self::parseValue($value);
+                $value = static::parseValue($value);
 
                 return true;
             }

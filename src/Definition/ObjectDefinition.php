@@ -130,17 +130,16 @@ class ObjectDefinition extends \stdClass
     /**
      * New Instance of defined class.
      *
-     * @param bool $bool
+     * @param bool $withConstructor
      *
      * @return object|\ReflectionClass
      */
-    public function getNewInstance($bool = true)
+    public function getNewInstance($withConstructor = true)
     {
         $object = new \ReflectionClass($this->name);
-        $object = $bool ?
+
+        return $withConstructor ?
             $object->newInstanceArgs($this->constructorInjection)
             : $object->newInstanceWithoutConstructor();
-
-        return $object;
     }
 }

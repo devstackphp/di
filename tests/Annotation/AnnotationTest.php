@@ -27,7 +27,7 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
     {
         $source = new Annotation($this->definitions);
         $definition = $source->get('Stack\DI\Fixtures\AnnotationFixture');
-        $annotationFixture = new AnnotationFixture('foo', new AnnotationFixture2(null, null));
+        $annotationFixture = new AnnotationFixture('foo', new AnnotationFixture2(1, 2));
         $annotationFixture->setProperty3('bar');
 
         $this->assertEquals($annotationFixture, $definition);
