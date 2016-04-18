@@ -23,5 +23,5 @@ interface DefinitionSourceInterface
      *
      * @return mixed|null|object
      */
-    public function get($name);
+    public function get ($name);
 }

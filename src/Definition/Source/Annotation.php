@@ -30,7 +30,7 @@ class Annotation extends AbstractDefinitionSource
      *
      * @return mixed|null|object
      */
-    public function get($name)
+    public function get ($name)
     {
         if ($this->has($name)) {
             return $this->definitions[$name];
@@ -57,7 +57,7 @@ class Annotation extends AbstractDefinitionSource
      *
      * @return PhpDocReader
      */
-    private function getPhpDocReader()
+    private function getPhpDocReader ()
     {
         if ($this->phpDocReader === null) {
             $this->phpDocReader = new PhpDocReader();
@@ -72,7 +72,7 @@ class Annotation extends AbstractDefinitionSource
      * @param \ReflectionClass $class
      * @param ObjectDefinition $object
      */
-    private function readProperties(\ReflectionClass $class, ObjectDefinition $object)
+    private function readProperties (\ReflectionClass $class, ObjectDefinition $object)
     {
         $namespace = $class->getNamespaceName();
         foreach ($class->getProperties() as $property) {
@@ -103,7 +103,7 @@ class Annotation extends AbstractDefinitionSource
      *
      * @throws \Stack\DI\Exception\AnnotationException
      */
-    private function setProperty(\ReflectionProperty $property, ObjectDefinition $objectDefinition, $namespace)
+    private function setProperty (\ReflectionProperty $property, ObjectDefinition $objectDefinition, $namespace)
     {
         $this->getPhpDocReader()->setNamespace($namespace);
         $propertyClass       = $this->getPhpDocReader()->getPropertyClass($property);
@@ -122,7 +122,7 @@ class Annotation extends AbstractDefinitionSource
      *
      * @return object|\ReflectionClass
      */
-    private function setMethods(\ReflectionClass $class, ObjectDefinition $objectDefinition)
+    private function setMethods (\ReflectionClass $class, ObjectDefinition $objectDefinition)
     {
         $isConstructor = false;
         $methodName    = [];
@@ -166,7 +166,7 @@ class Annotation extends AbstractDefinitionSource
      *
      * @return array|null
      */
-    private function getMethodParameters(\ReflectionMethod $method)
+    private function getMethodParameters (\ReflectionMethod $method)
     {
         $annotationParameters = $this->getPhpDocReader()->getMethodParameters($method);
         if ($annotationParameters !== null) {

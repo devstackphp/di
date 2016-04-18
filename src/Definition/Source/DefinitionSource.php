@@ -26,7 +26,7 @@ abstract class DefinitionSource implements DefinitionSourceInterface
      *
      * @param array $definitions
      */
-    public function __construct(array $definitions)
+    public function __construct (array $definitions)
     {
         $this->definitions = $definitions;
     }
@@ -36,7 +36,7 @@ abstract class DefinitionSource implements DefinitionSourceInterface
      *
      * @param array $definitions
      */
-    public function add(array $definitions)
+    public function add (array $definitions)
     {
         $this->definitions = array_merge($this->definitions, $definitions);
     }
@@ -49,7 +49,7 @@ abstract class DefinitionSource implements DefinitionSourceInterface
      *
      * @return bool
      */
-    public function has($name)
+    public function has ($name)
     {
         if (!is_string($name)) {
             return false;
@@ -64,7 +64,7 @@ abstract class DefinitionSource implements DefinitionSourceInterface
      * @param $name
      * @param $value
      */
-    public function set($name, $value)
+    public function set ($name, $value)
     {
         $this->definitions[$name] = $value;
     }
