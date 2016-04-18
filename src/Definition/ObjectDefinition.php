@@ -46,7 +46,7 @@ class ObjectDefinition extends \stdClass
      * @param string $name      Entry name
      * @param null   $className Class name
      */
-    public function __construct($name, $className = null)
+    public function __construct ($name, $className = null)
     {
         $this->name      = $name;
         $this->className = $className;
@@ -55,7 +55,7 @@ class ObjectDefinition extends \stdClass
     /**
      * @return string Class name
      */
-    public function getClassName()
+    public function getClassName ()
     {
         if ($this->className !== null) {
             return $this->className;
@@ -67,7 +67,7 @@ class ObjectDefinition extends \stdClass
     /**
      * @return string Entry name
      */
-    public function getName()
+    public function getName ()
     {
         return $this->name;
     }
@@ -78,7 +78,7 @@ class ObjectDefinition extends \stdClass
      * @param $name
      * @param array $methodInjection
      */
-    public function addMethodInjection($name, array $methodInjection)
+    public function addMethodInjection ($name, array $methodInjection)
     {
         if (!isset($this->methodInjections[$name])) {
             $this->methodInjections[$name] = [];
@@ -93,7 +93,7 @@ class ObjectDefinition extends \stdClass
      * @param \ReflectionProperty $property
      * @param $target
      */
-    public function setPropertyInjection(\ReflectionProperty $property, $target)
+    public function setPropertyInjection (\ReflectionProperty $property, $target)
     {
         if (!$property->isPublic()) {
             $property->setAccessible(true);
@@ -106,7 +106,7 @@ class ObjectDefinition extends \stdClass
      *
      * @param array $methodInjection
      */
-    public function setConstructorInjection(array $methodInjection)
+    public function setConstructorInjection (array $methodInjection)
     {
         $this->constructorInjection = $methodInjection;
     }
@@ -118,7 +118,7 @@ class ObjectDefinition extends \stdClass
      *
      * @return array
      */
-    public function getMethodParameters($name)
+    public function getMethodParameters ($name)
     {
         if (isset($this->methodInjections[$name])) {
             return $this->methodInjections[$name][0];
@@ -134,7 +134,7 @@ class ObjectDefinition extends \stdClass
      *
      * @return object|\ReflectionClass
      */
-    public function getNewInstance($withConstructor = true)
+    public function getNewInstance ($withConstructor = true)
     {
         $object = new \ReflectionClass($this->name);
 

@@ -38,14 +38,14 @@ class AliasDefinition
      */
     public function __construct($name = null, $targetName = null)
     {
-        $this->name = $name;
+        $this->name       = $name;
         $this->targetName = $targetName;
     }
 
     /**
      * Extract name from target entry.
      *
-     * @param $targetName
+     * @param string $targetName
      */
     public function aliasFromNamespace($targetName)
     {

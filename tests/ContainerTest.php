@@ -12,7 +12,7 @@ namespace Stack\DI;
 class ContainerTest extends \PHPUnit_Framework_TestCase
 {
     const HELLO = 'hello';
-    const FOO = 'Stack\DI\Fixtures\Foo';
+    const FOO   = 'Stack\DI\Fixtures\Foo';
 
     public function testHas()
     {
