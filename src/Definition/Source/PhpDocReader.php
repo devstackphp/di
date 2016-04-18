@@ -57,8 +57,8 @@ class PhpDocReader
         }
 
         $classNames = end($matches);
-		
-		if (!is_array($classNames)) {
+
+        if (!is_array($classNames)) {
             return;
         }
 
@@ -93,8 +93,8 @@ class PhpDocReader
         }
 
         $className = end($matches);
-		
-		if (!is_string($className)) {
+
+        if (!is_string($className)) {
             return;
         }
 
