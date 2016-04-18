@@ -14,7 +14,7 @@ namespace Stack\DI\Definition\Source;
  *
  * @author Andrzej Kostrzewa <andkos11@gmail.com>
  */
-class Autowiring extends DefinitionSource
+class Autowiring extends AbstractDefinitionSource
 {
     /**
      * {@inheritdoc}
@@ -90,8 +90,8 @@ class Autowiring extends DefinitionSource
     private function getClassDefinition(\ReflectionClass $parameterClass)
     {
         $parameterClassName = $parameterClass->getName();
-        $entryReference = new \ReflectionClass($parameterClass->getName());
-        $argumentParams = false;
+        $entryReference     = new \ReflectionClass($parameterClass->getName());
+        $argumentParams     = false;
 
         if ($entryReference->getConstructor()) {
             $argumentParams = $entryReference->getConstructor()->getParameters();

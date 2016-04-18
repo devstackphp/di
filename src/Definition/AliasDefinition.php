@@ -19,14 +19,14 @@ class AliasDefinition
     /**
      * Entry name.
      *
-     * @var string
+     * @var string|null
      */
     private $name;
 
     /**
      * Name of the target entry.
      *
-     * @var string
+     * @var string|null
      */
     private $targetName;
 
@@ -49,9 +49,9 @@ class AliasDefinition
      */
     public function aliasFromNamespace($targetName)
     {
-        $name = explode('\\', $targetName);
-        $name = end($name);
-        $this->name = strtolower($name);
+        $name             = explode('\\', $targetName);
+        $name             = end($name);
+        $this->name       = strtolower($name);
         $this->targetName = $targetName;
     }
 

@@ -68,7 +68,7 @@ class PhpDocReader
             if (in_array($values[0], static::$ignoredTypes)) {
                 $value = end($values);
                 $value = trim($value, ') ');
-                $type = static::parseValue($value);
+                $type  = static::parseValue($value);
             }
             $parameters[] = $type;
         }
@@ -197,7 +197,7 @@ class PhpDocReader
         $isArrayOrOther = function (&$value) {
             if (substr($value, 0, 1) === '[' && substr($value, -1) === ']') {
                 $valuesArray = explode(',', substr($value, 1, -1));
-                $value = [];
+                $value       = [];
                 foreach ($valuesArray as $val) {
                     $value[] = static::parseValue($val);
                 }
@@ -233,14 +233,14 @@ class PhpDocReader
      * @param string       $property
      * @param string|false $className
      *
-     * @return array|null
+     * @return string[]|false|null
      */
     private function propertyClassParameters($property, $className)
     {
         $classNamePosition = strpos($property, $className);
         if ($classNamePosition !== false) {
             $classNameLength = mb_strlen($className);
-            $property = ltrim(substr($property, $classNamePosition + $classNameLength));
+            $property        = ltrim(substr($property, $classNamePosition + $classNameLength));
             if (preg_match_all('/([\w,$\[\]\'\"]+)/', $property, $matches)) {
                 return end($matches);
             }

@@ -67,7 +67,7 @@ class ContainerBuilder
      *
      * @param array $definitions
      *
-     * @return bool
+     * @return $this
      */
     public function addDefinitions(array $definitions)
     {

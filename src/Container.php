@@ -56,13 +56,13 @@ class Container implements ContainerInterface
      * Container constructor.
      *
      * @param DefinitionSourceInterface $definitionSource
-     * @param ContainerInterface        $delegateContainer
+     * @param null|ContainerInterface   $delegateContainer
      */
     public function __construct(
         DefinitionSourceInterface $definitionSource,
         ContainerInterface $delegateContainer = null
     ) {
-        $this->definitionSource = $definitionSource;
+        $this->definitionSource  = $definitionSource;
         $this->delegateContainer = $delegateContainer;
     }
 
@@ -79,7 +79,7 @@ class Container implements ContainerInterface
     public function get($name)
     {
         $service = $name;
-        $name = strtolower($name);
+        $name    = strtolower($name);
 
         if (!$this->hasAlias($name) && !$this->has($name)) {
             $this->setAlias($name);
@@ -142,12 +142,12 @@ class Container implements ContainerInterface
      */
     public function set($name, $value)
     {
-        $name = strtolower($name);
+        $name      = strtolower($name);
         $isClosure = false;
 
         if ($value instanceof \Closure) {
-            $this->useServiceFactory = true;
-            $isClosure = true;
+            $this->useServiceFactory     = true;
+            $isClosure                   = true;
             $this->serviceFactory[$name] = $value;
             unset($this->services[$name]);
         }
@@ -201,7 +201,7 @@ class Container implements ContainerInterface
      */
     private function getServiceFromFactory($name)
     {
-        $serviceFactory = $this->serviceFactory[$name];
+        $serviceFactory    = $this->serviceFactory[$name];
         $delegateContainer = $this->delegateContainer ?: $this;
 
         return $serviceFactory($delegateContainer);

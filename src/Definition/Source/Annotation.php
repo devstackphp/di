@@ -16,7 +16,7 @@ use Stack\DI\Definition\ObjectDefinition;
  *
  * @author Andrzej Kostrzewa <andkos11@gmail.com>
  */
-class Annotation extends DefinitionSource
+class Annotation extends AbstractDefinitionSource
 {
     /**
      * @var PhpDocReader
@@ -40,7 +40,7 @@ class Annotation extends DefinitionSource
             return;
         }
 
-        $class = new \ReflectionClass($name);
+        $class  = new \ReflectionClass($name);
         $object = new ObjectDefinition($name);
 
         $this->readProperties($class, $object);
@@ -106,7 +106,7 @@ class Annotation extends DefinitionSource
     private function setProperty(\ReflectionProperty $property, ObjectDefinition $objectDefinition, $namespace)
     {
         $this->getPhpDocReader()->setNamespace($namespace);
-        $propertyClass = $this->getPhpDocReader()->getPropertyClass($property);
+        $propertyClass       = $this->getPhpDocReader()->getPropertyClass($property);
         $propertyClassObject = $propertyClass ? $propertyClass->getNewInstance() : null;
         $objectDefinition->setPropertyInjection($property, $propertyClassObject);
         if ($propertyClass !== null) {
@@ -125,7 +125,7 @@ class Annotation extends DefinitionSource
     private function setMethods(\ReflectionClass $class, ObjectDefinition $objectDefinition)
     {
         $isConstructor = false;
-        $methodName = [];
+        $methodName    = [];
         foreach ($class->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
             if ($method->isStatic()) {
                 continue;
@@ -140,7 +140,7 @@ class Annotation extends DefinitionSource
             if ($method->isConstructor()) {
                 $objectDefinition->setConstructorInjection($methodParameters);
                 $isConstructor = true;
-                $isMethod = false;
+                $isMethod      = false;
             }
 
             if ($isMethod) {
@@ -152,7 +152,7 @@ class Annotation extends DefinitionSource
         $object = $objectDefinition->getNewInstance($isConstructor);
         foreach ($methodName as $name) {
             $methodReflection = new \ReflectionMethod($object, $name);
-            $args = $objectDefinition->getMethodParameters($name);
+            $args             = $objectDefinition->getMethodParameters($name);
             $methodReflection->invokeArgs($object, $args);
         }
 

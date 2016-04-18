@@ -48,7 +48,7 @@ class ObjectDefinition extends \stdClass
      */
     public function __construct($name, $className = null)
     {
-        $this->name = $name;
+        $this->name      = $name;
         $this->className = $className;
     }
 
