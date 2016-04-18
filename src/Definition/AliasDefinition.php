@@ -45,7 +45,7 @@ class AliasDefinition
     /**
      * Extract name from target entry.
      *
-     * @param $targetName
+     * @param string $targetName
      */
     public function aliasFromNamespace($targetName)
     {

@@ -58,7 +58,7 @@ class Container implements ContainerInterface
      * @param DefinitionSourceInterface $definitionSource
      * @param null|ContainerInterface   $delegateContainer
      */
-    public function __construct(
+    public function __construct (
         DefinitionSourceInterface $definitionSource,
         ContainerInterface $delegateContainer = null
     ) {
@@ -76,7 +76,7 @@ class Container implements ContainerInterface
      *
      * @return mixed Entry.
      */
-    public function get($name)
+    public function get ($name)
     {
         $service = $name;
         $name    = strtolower($name);
@@ -116,7 +116,7 @@ class Container implements ContainerInterface
      *
      * @return bool
      */
-    public function has($name)
+    public function has ($name)
     {
         if (!is_string($name)) {
             throw new \InvalidArgumentException(sprintf(
@@ -140,7 +140,7 @@ class Container implements ContainerInterface
      * @param string $name  Entry name
      * @param mixed  $value Value
      */
-    public function set($name, $value)
+    public function set ($name, $value)
     {
         $name      = strtolower($name);
         $isClosure = false;
@@ -162,7 +162,7 @@ class Container implements ContainerInterface
      *
      * @return mixed
      */
-    private function getAlias($name)
+    private function getAlias ($name)
     {
         if (!$this->hasAlias($name)) {
             throw new \InvalidArgumentException(sprintf('The service alias "%s" does not exist.', $name));
@@ -176,7 +176,7 @@ class Container implements ContainerInterface
      *
      * @return bool
      */
-    private function hasAlias($name)
+    private function hasAlias ($name)
     {
         return isset($this->aliasDefinitions[$name]);
     }
@@ -184,7 +184,7 @@ class Container implements ContainerInterface
     /**
      * @param string $name
      */
-    private function setAlias($name)
+    private function setAlias ($name)
     {
         $alias = new AliasDefinition();
         $alias->aliasFromNamespace($name);
@@ -199,7 +199,7 @@ class Container implements ContainerInterface
      *
      * @return mixed
      */
-    private function getServiceFromFactory($name)
+    private function getServiceFromFactory ($name)
     {
         $serviceFactory    = $this->serviceFactory[$name];
         $delegateContainer = $this->delegateContainer ?: $this;
