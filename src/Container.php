@@ -96,22 +96,15 @@ class Container implements ContainerInterface
 
         if ($this->useServiceFactory) {
             $service = $this->getServiceFromFactory($name);
-
-            if ($this->definitionSource === null) {
-                $this->services[$name] = $service;
-
-                return $service;
-            }
         }
 
         if ($this->definitionSource !== null) {
             $service = $this->definitionSource->get($service);
-            $this->services[$name] = $service;
-
-            return $service;
         }
 
-        throw new ServiceNotFoundException('Service not found: '.$name);
+        $this->services[$name] = $service;
+
+        return $service;
     }
 
     /**

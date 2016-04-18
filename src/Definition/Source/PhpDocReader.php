@@ -57,6 +57,10 @@ class PhpDocReader
         }
 
         $classNames = end($matches);
+		
+		if (!is_array($classNames)) {
+            return;
+        }
 
         $parameters = [];
         foreach ($classNames as $type) {
@@ -89,6 +93,10 @@ class PhpDocReader
         }
 
         $className = end($matches);
+		
+		if (!is_string($className)) {
+            return;
+        }
 
         if (in_array($className, self::$ignoredTypes)) {
             return;
@@ -110,7 +118,7 @@ class PhpDocReader
         }
 
         $classParameters = $this->propertyClassParameters($propertyComment, $className);
-        if ($classParameters !== null) {
+        if (is_array($classParameters)) {
             $values = [];
             foreach ($classParameters as $value) {
                 $values[] = $this->parseValue($value);
