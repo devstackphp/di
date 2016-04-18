@@ -126,7 +126,7 @@ class PhpDocReader
     }
 
     /**
-     * @param $className
+     * @param string|false $className
      *
      * @return bool
      */
@@ -136,9 +136,9 @@ class PhpDocReader
     }
 
     /**
-     * @param $className
+     * @param string|false $className
      *
-     * @return bool|int
+     * @return integer
      */
     private function namespaceExists($className)
     {
@@ -150,7 +150,7 @@ class PhpDocReader
      *
      * @param $value
      *
-     * @return array|bool|float|int|string
+     * @return string
      */
     private function parseValue($value)
     {
@@ -222,8 +222,8 @@ class PhpDocReader
     /**
      * Get property class parameters.
      *
-     * @param $property
-     * @param $className
+     * @param string $property
+     * @param string|false $className
      *
      * @return array|null
      */
