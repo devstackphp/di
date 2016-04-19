@@ -1,1 +1,1 @@
-coverage_clover: build/tests-clover.xml
+coverage_clover: clover.xml
