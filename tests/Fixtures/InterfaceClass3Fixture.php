@@ -10,12 +10,6 @@
 
 namespace Stack\DI\Fixtures;
 
-class Foo
+class InterfaceClass3Fixture extends InterfaceClass2Fixture
 {
-    /**
-     * Foo constructor.
-     */
-    public function __construct()
-    {
-    }
 }

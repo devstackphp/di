@@ -8,8 +8,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Stack\DI\Exception;
+namespace Stack\DI\Resolver;
 
-class AnnotationException extends \Exception
+/**
+ * Class AnnotationResolver
+ *
+ * @author Andrzej Kostrzewa <andkos11@gmail.com>
+ */
+class AnnotationResolver extends Resolver
 {
 }

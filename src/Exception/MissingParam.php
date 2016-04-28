@@ -8,21 +8,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Stack\DI\Definition\Source;
+namespace Stack\DI\Exception;
+
+use Stack\DI\Exception;
 
 /**
- * Source of definitions for entries of the container.
+ * A constructor parameter is missing.
  *
  * @author Andrzej Kostrzewa <andkos11@gmail.com>
  */
-interface DefinitionSourceInterface
+class MissingParam extends Exception
 {
-    /**
-     * Returns the DI definition for the entry name.
-     *
-     * @param $name
-     *
-     * @return mixed|null|object
-     */
-    public function get($name);
 }

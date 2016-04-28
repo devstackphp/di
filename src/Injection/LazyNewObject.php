@@ -8,10 +8,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Stack\DI\Exception;
+namespace Stack\DI\Injection;
 
-use Interop\Container\Exception\NotFoundException;
-
-class ReflectorNotCommentedException extends \Exception implements NotFoundException
+/**
+ * Returns a new instance of an object when invoked.
+ *
+ * @author Andrzej Kostrzewa <andkos11@gmail.com>
+ */
+class LazyNewObject extends ObjectFactory implements LazyInterface
 {
 }

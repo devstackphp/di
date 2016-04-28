@@ -8,8 +8,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Stack\DI\Fixtures;
+namespace Stack\DI\Exception;
 
-class AutowiringFixtureChild extends AutowiringFixture
+use Stack\DI\Exception;
+
+/**
+ * Setter method not found in target class.
+ *
+ * @author Andrzej Kostrzewa <andkos11@gmail.com>
+ */
+class SetterMethodNotFound extends Exception
 {
 }

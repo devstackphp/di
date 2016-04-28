@@ -11,8 +11,11 @@
 namespace Stack\DI;
 
 use Interop\Container\ContainerInterface;
-use Stack\DI\Definition\Source\Annotation;
-use Stack\DI\Definition\Source\Autowiring;
+use Stack\DI\Injection\InjectionFactory;
+use Stack\DI\Resolver\AnnotationResolver;
+use Stack\DI\Resolver\AutoResolver;
+use Stack\DI\Resolver\Reflector;
+use Stack\DI\Resolver\Resolver;
 
 /**
  * Helper to create and configure a Container.
@@ -34,16 +37,6 @@ class ContainerBuilder
     private $containerClass;
 
     /**
-     * @var bool
-     */
-    private $useAutowiring = true;
-
-    /**
-     * @var bool
-     */
-    private $useAnnotation = false;
-
-    /**
      * @var array
      */
     private $definitionSources = [];
@@ -54,6 +47,16 @@ class ContainerBuilder
     private $delegateContainer;
 
     /**
+     * @var bool
+     */
+    private $useAutowiring = true;
+
+    /**
+     * @var bool
+     */
+    private $useAnnotation = false;
+
+    /**
      * ContainerBuilder constructor.
      *
      * @param string $containerClass
@@ -62,31 +65,19 @@ class ContainerBuilder
     {
         $this->containerClass = $containerClass;
     }
-
     /**
      * Add definitions to the container.
      *
      * @param array $definitions
      *
-     * @throws \InvalidArgumentException
-     *
      * @return $this
      */
-    public function addDefinitions($definitions)
+    public function addDefinitions(array $definitions)
     {
-        if(!is_array($definitions)) {
-            throw new \InvalidArgumentException(sprintf(
-                '%s parameter must be an array, %s given',
-                'ContainerBuilder::addDefinitions()',
-                is_object($definitions) ? get_class($definitions) : gettype($definitions)
-            ));
-        }
-
-        $this->definitionSources = array_merge($this->definitionSources, $definitions);
+        $this->definitionSources = $definitions;
 
         return $this;
     }
-
     /**
      * Build and return a container.
      *
@@ -94,16 +85,11 @@ class ContainerBuilder
      */
     public function build()
     {
-        $definitionSource = null;
-        if ($this->useAnnotation) {
-            $definitionSource = new Annotation($this->definitionSources);
-        } elseif ($this->useAutowiring) {
-            $definitionSource = new Autowiring($this->definitionSources);
-        }
-
+        $resolver = $this->newResolver();
+        $resolver->add($this->definitionSources);
         $containerClass = $this->containerClass;
 
-        return new $containerClass($definitionSource, $this->delegateContainer);
+        return new $containerClass(new InjectionFactory($resolver), $this->delegateContainer);
     }
 
     /**
@@ -117,10 +103,8 @@ class ContainerBuilder
 
         return $builder->build();
     }
-
     /**
      * Enable or disable the use of autowiring to guess injections.
-     *
      * Enabled by default.
      *
      * @param $bool
@@ -133,10 +117,8 @@ class ContainerBuilder
 
         return $this;
     }
-
     /**
      * Enable or disable the use of annotations to guess injections.
-     *
      * Disabled by default.
      *
      * @param $bool
@@ -149,7 +131,6 @@ class ContainerBuilder
 
         return $this;
     }
-
     /**
      * Delegate the container for dependencies.
      *
@@ -162,5 +143,21 @@ class ContainerBuilder
         $this->delegateContainer = $delegateContainer;
 
         return $this;
+    }
+
+    /**
+     * Returns a new Resolver instance.
+     *
+     * @return AnnotationResolver|AutoResolver|Resolver
+     */
+    protected function newResolver()
+    {
+        if ($this->useAnnotation) {
+            return new AnnotationResolver(new Reflector());
+        } elseif ($this->useAutowiring) {
+            return new AutoResolver(new Reflector());
+        }
+
+        return new Resolver(new Reflector());
     }
 }

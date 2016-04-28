@@ -13,8 +13,9 @@ namespace Stack\DI;
 use Interop\Container\ContainerInterface;
 use Interop\Container\Exception\ContainerException;
 use Interop\Container\Exception\NotFoundException;
-use Stack\DI\Definition\AliasDefinition;
-use Stack\DI\Definition\Source\DefinitionSourceInterface;
+use Stack\DI\Injection\InjectionFactory;
+use Stack\DI\Injection\LazyInterface;
+use Stack\DI\Resolver\AliasResolver;
 
 /**
  * Dependency Injection Container.
@@ -24,9 +25,24 @@ use Stack\DI\Definition\Source\DefinitionSourceInterface;
 class Container implements ContainerInterface
 {
     /**
-     * @var callable[]
+     * @var AliasResolver
      */
-    private $serviceFactory = [];
+    private $aliasResolver;
+
+    /**
+     * @var ContainerInterface|null
+     */
+    private $delegateContainer;
+
+    /**
+     * @var InjectionFactory
+     */
+    private $injectionFactory;
+
+    /**
+     * @var array
+     */
+    private $instances = [];
 
     /**
      * @var array
@@ -34,39 +50,19 @@ class Container implements ContainerInterface
     private $services = [];
 
     /**
-     * @var ContainerInterface
-     */
-    private $delegateContainer;
-
-    /**
-     * @var DefinitionSourceInterface
-     */
-    private $definitionSource;
-
-    /**
-     * @var array
-     */
-    private $aliasDefinitions = [];
-
-    /**
-     * @var bool
-     */
-    private $useServiceFactory = false;
-
-    /**
      * Container constructor.
      *
-     * @param DefinitionSourceInterface $definitionSource
-     * @param null|ContainerInterface   $delegateContainer
+     * @param InjectionFactory $injectionFactory
+     * @param ContainerInterface|null $delegateContainer
      */
     public function __construct(
-        DefinitionSourceInterface $definitionSource,
+        InjectionFactory $injectionFactory,
         ContainerInterface $delegateContainer = null
     ) {
-        $this->definitionSource  = $definitionSource;
+        $this->aliasResolver = new AliasResolver($this);
+        $this->injectionFactory = $injectionFactory;
         $this->delegateContainer = $delegateContainer;
-
-        $this->services['container'] = $this;
+        $this->instances['Container'] = $this;
     }
 
     /**
@@ -81,36 +77,70 @@ class Container implements ContainerInterface
      */
     public function get($name)
     {
-        $service = $name;
-        $name    = strtolower($name);
-
-        if (!$this->hasAlias($name) && !$this->has($name)) {
-            $this->setAlias($name);
+        if (isset($this->instances[$name]) || array_key_exists($name, $this->instances)) {
+            return $this->instances[$name];
         }
 
-        if ($this->hasAlias($name)) {
-            $name = $this->getAlias($name);
+        if ($this->aliasResolver->isResolvable($name)) {
+            return $this->aliasResolver->resolve($name);
         }
 
-        if ($this->has($name)) {
-            $this->useServiceFactory = false;
+        $this->aliasResolver->setAlias(new Alias($name));
 
-            return $this->services[$name];
-        }
+        $this->instances[$name] = $this->getServiceInstance($name);
 
-        if ($this->useServiceFactory) {
-            if ($this->hasServiceInFactory($name)) {
-                $service = $this->getServiceFromFactory($name);
-            }
-        }
+        return $this->instances[$name];
+    }
 
-        if ($this->definitionSource !== null) {
-            $service = $this->definitionSource->get($service);
-        }
+    /**
+     * Build an entry of the container by its name.
+     * This method makes the container behave like a factory.
+     *
+     * @param string $name Entry name or a class name.
+     * @param array $parameters Optional parameters to use to build the entry. Use this to force specific parameters
+     *                           to specific values. Parameters not defined in this array will be resolved using
+     *                           the container.
+     * @param array $setters Optional setters to use to build the entry.
+     *
+     * @return mixed
+     */
+    public function make($name, array $parameters = [], array $setters = [])
+    {
+        $instance = $this->injectionFactory->newLazyNewObject($name, $parameters, $setters);
 
-        $this->services[$name] = $service;
+        return $instance();
+    }
 
-        return $service;
+    /**
+     * Returns a lazy object that gets a service.
+     *
+     * @param string $name The entry name; it does not need to exist yet.
+     * @return Injection\LazyGetObject
+     */
+    public function lazyGet($name)
+    {
+        return $this->injectionFactory->newLazyGetObject($this, $name);
+    }
+
+    /**
+     * Call the given function using the given parameters.
+     * Missing parameters will be resolved from the container.
+     *
+     * @param string $name Entry name.
+     * @param string $method The method to call on the service object.
+     * @var mixed $parameters,... Parameters to use in the method call.
+     *
+     * @return Injection\LazyObject
+     */
+    public function call($name, $method)
+    {
+        $callable = [$this->lazyGet($name), $method];
+
+        $parameters = func_get_args();
+        array_shift($parameters);
+        array_shift($parameters);
+
+        return $this->injectionFactory->newLazyObject($callable, $parameters);
     }
 
     /**
@@ -119,101 +149,84 @@ class Container implements ContainerInterface
      *
      * @param string $name Identifier of the entry to look for.
      *
-     * @return bool
+     * @return boolean
      */
     public function has($name)
     {
-        if (!is_string($name)) {
-            throw new \InvalidArgumentException(sprintf(
-                'The name parameter must be of type string, %s given',
-                is_object($name) ? get_class($name) : gettype($name)
-            ));
+        if (isset($this->services[$name])) {
+            return true;
         }
 
-        $serviceName = strtolower($name);
-
-        if ($this->hasAlias($serviceName)) {
-            $serviceName = $this->aliasDefinitions[$serviceName];
-        }
-
-        return isset($this->services[$serviceName]) || array_key_exists($serviceName, $this->services);
+        return isset($this->delegateContainer)
+        && $this->delegateContainer->has($name);
     }
 
     /**
      * Define an object in the container.
      *
-     * @param string $name  Entry name
-     * @param mixed  $value Value
+     * @param string $name Entry name.
+     * @param mixed $value Value definition.
+     * @return $this
      */
     public function set($name, $value)
     {
-        $name      = strtolower($name);
-        $isClosure = false;
-
+        $isLazy = false;
         if ($value instanceof \Closure) {
-            $this->useServiceFactory     = true;
-            $isClosure                   = true;
-            $this->serviceFactory[$name] = $value;
-            unset($this->services[$name]);
+            $value = $this->injectionFactory->newLazyObject($value);
+            $nameOfValue = $name;
+            if (!is_string($value)) {
+                $nameOfValue = new \ReflectionObject($value());
+                $nameOfValue = $nameOfValue->getName();
+            }
+            $this->aliasResolver->setAlias(new Alias($nameOfValue, $name));
+            $isLazy = true;
         }
 
-        if (!$isClosure) {
+        if (!$isLazy) {
+            $this->instances[$name] = $value;
+        }
+
+        $this->services[$name] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Returns the secondary delegate container.
+     *
+     * @return ContainerInterface|null
+     */
+    public function getDelegateContainer()
+    {
+        return $this->delegateContainer;
+    }
+
+    /**
+     * Instantiates a service object by key, lazy-loading it as needed.
+     *
+     * @param string $name Entry name to get.
+     *
+     * @return object
+     *
+     * @throws Exception\ServiceNotFound when the requested service does not exist.
+     */
+    private function getServiceInstance($name)
+    {
+        if (!$this->has($name)) {
+            $value = $this->injectionFactory->newLazyNewObject($name);
             $this->services[$name] = $value;
         }
-    }
 
-    /**
-     * @param string $name
-     *
-     * @return mixed
-     */
-    private function getAlias($name)
-    {
-        if (!$this->hasAlias($name)) {
-            throw new \InvalidArgumentException(sprintf('The service alias "%s" does not exist.', $name));
+        if (!isset($this->services[$name])) {
+            return $this->delegateContainer->get($name);
         }
 
-        return $this->aliasDefinitions[$name];
-    }
+        $instance = $this->services[$name];
 
-    /**
-     * @param string $name
-     *
-     * @return bool
-     */
-    private function hasAlias($name)
-    {
-        return isset($this->aliasDefinitions[$name]);
-    }
+        if ($instance instanceof LazyInterface) {
+            $instance = $instance();
+        }
 
-    /**
-     * @param string $name
-     */
-    private function setAlias($name)
-    {
-        $alias = new AliasDefinition();
-        $alias->aliasFromNamespace($name);
-
-        $this->aliasDefinitions[$alias->getTargetName()] = $alias->getName();
-    }
-
-    /**
-     * Get service from Closure object.
-     *
-     * @param string $name
-     *
-     * @return mixed
-     */
-    private function getServiceFromFactory($name)
-    {
-        $serviceFactory    = $this->serviceFactory[$name];
-        $delegateContainer = $this->delegateContainer ?: $this;
-
-        return $serviceFactory($delegateContainer);
-    }
-
-    private function hasServiceInFactory($name)
-    {
-        return isset($this->serviceFactory[$name]);
+        return $instance;
     }
 }

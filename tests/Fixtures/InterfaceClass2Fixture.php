@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * This file is part of the Stack package.
  *
  * (c) Andrzej Kostrzewa <andkos11@gmail.com>
@@ -10,12 +10,6 @@
 
 namespace Stack\DI\Fixtures;
 
-use stdClass;
-
-class PassByReferenceDependency
+class InterfaceClass2Fixture extends InterfaceClass1Fixture
 {
-    public function __construct(stdClass &$object)
-    {
-        $object->foo = 'bar';
-    }
 }

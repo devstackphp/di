@@ -10,11 +10,7 @@
 
 namespace Stack\DI\Fixtures;
 
-class AutowiringFixture
+class ClassWithTraitFixture
 {
-    public function __construct(AutowiringFixture2 $param1, $param2 = null)
-    {
-        $this->param1 = $param1;
-        $this->param2 = $param2;
-    }
+    use FakeTrait;
 }

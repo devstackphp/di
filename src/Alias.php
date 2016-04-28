@@ -8,64 +8,57 @@
  * file that was distributed with this source code.
  */
 
-namespace Stack\DI\Definition;
+namespace Stack\DI;
 
 /**
  * Defines an alias from an entry to another.
  *
  * @author Andrzej Kostrzewa <andkos11@gmail.com>
  */
-class AliasDefinition
+class Alias
 {
     /**
      * Entry name.
      *
-     * @var string|null
+     * @var null|string
      */
     private $name;
 
     /**
      * Name of the target entry.
      *
-     * @var string|null
+     * @var string
      */
     private $targetName;
 
     /**
-     * AliasDefinition constructor.
-     *
-     * @param string|null $name       Entry name
-     * @param string|null $targetName Name of the target entry
-     */
-    public function __construct($name = null, $targetName = null)
-    {
-        $this->name       = $name;
-        $this->targetName = $targetName;
-    }
-
-    /**
-     * Extract name from target entry.
+     * Alias constructor.
      *
      * @param string $targetName
+     * @param null|string $name
      */
-    public function aliasFromNamespace($targetName)
+    public function __construct($targetName, $name = null)
     {
-        $name             = explode('\\', $targetName);
-        $name             = end($name);
-        $this->name       = strtolower($name);
+        $this->name = $name;
         $this->targetName = $targetName;
     }
 
     /**
-     * @return string|null Entry name
+     * @return null|string Entry name.
      */
     public function getName()
     {
+        if ($this->name === null) {
+            $name       = explode('\\', $this->targetName);
+            $name       = end($name);
+            $this->name = $name;
+        }
+
         return $this->name;
     }
 
     /**
-     * @return string|null Name of the target entry
+     * @return string Name of the target entry.
      */
     public function getTargetName()
     {

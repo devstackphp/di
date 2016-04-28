@@ -8,10 +8,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Stack\DI\Exception;
+namespace Stack\DI\Fixtures;
 
-use Interop\Container\Exception\NotFoundException;
-
-class ServiceNotFoundException extends \Exception implements NotFoundException
+class ParamsClassFixture
 {
+    public $array;
+    public $empty = 'not null';
+    public function __construct(array $array, $empty)
+    {
+        $this->array = $array;
+        $this->empty = null;
+    }
 }

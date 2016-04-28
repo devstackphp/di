@@ -10,15 +10,15 @@
 
 namespace Stack\DI\Fixtures;
 
-class AnnotationFixture2
+trait FakeGrandchildTrait
 {
-    /**
-     * AnnotationFixture2 constructor.
-     *
-     * @param $param1
-     * @param $param2
-     */
-    public function __construct($param1, $param2)
+    protected $grandchild_fake;
+    public function setGrandchildFake($fake)
     {
+        $this->grandchild_fake = $fake;
+    }
+    public function getGrandchildFake()
+    {
+        return $this->grandchild_fake;
     }
 }
