@@ -14,9 +14,6 @@ use EasyMock\EasyMock;
 use Interop\Container\ContainerInterface;
 use Stack\DI\Fixtures\FakeContainer;
 
-/**
- * @covers Stack\DI\ContainerBuilder
- */
 class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
 {
     use EasyMock;
