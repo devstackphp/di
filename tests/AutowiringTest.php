@@ -15,9 +15,6 @@ use Stack\DI\Fixtures\AutowiringFixture;
 use Stack\DI\Fixtures\AutowiringFixture2;
 use Stack\DI\Fixtures\AutowiringFixtureChild;
 
-/**
- * @covers Stack\DI\Definition\Source\Autowiring
- */
 class AutowiringTest extends \PHPUnit_Framework_TestCase
 {
     private $definitions = [];
