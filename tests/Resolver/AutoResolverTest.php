@@ -14,7 +14,6 @@ use Stack\DI\Injection\LazyNewObject;
 /**
  * Class AutoResolverTest.
  *
- * @covers \Stack\DI\Resolver\AutoResolver
  */
 class AutoResolverTest extends \PHPUnit_Framework_TestCase
 {

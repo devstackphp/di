@@ -16,7 +16,6 @@ use Stack\DI\Fixtures\OtherClassFixture;
 /**
  * Class ResolverTest.
  *
- * @covers \Stack\DI\Resolver\Resolver
  */
 class ResolverTest extends \PHPUnit_Framework_TestCase
 {

@@ -19,7 +19,6 @@ use Stack\DI\Resolver\Resolver;
 /**
  * Class ContainerTest.
  *
- * @covers Stack\DI\Container
  */
 class ContainerTest extends \PHPUnit_Framework_TestCase
 {
