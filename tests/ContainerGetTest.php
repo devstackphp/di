@@ -22,7 +22,7 @@ class ContainerGetTest extends \PHPUnit_Framework_TestCase
     public function testSetGet()
     {
         $container = ContainerBuilder::buildDevContainer();
-        $dummy = new stdClass();
+        $dummy     = new stdClass();
         $container->set('key', $dummy);
         $this->assertSame($dummy, $container->get('key'));
     }
@@ -38,10 +38,10 @@ class ContainerGetTest extends \PHPUnit_Framework_TestCase
      */
     public function testPassByReferenceParameter()
     {
-		if(version_compare(phpversion(), '7.0.0', '<')) {
-			$container = ContainerBuilder::buildDevContainer();
-			$object = $container->get('Stack\DI\Fixtures\PassByReferenceDependency');
-			$this->assertInstanceOf('Stack\DI\Fixtures\PassByReferenceDependency', $object);
-		}
+        if (version_compare(phpversion(), '7.0.0', '<')) {
+            $container = ContainerBuilder::buildDevContainer();
+            $object    = $container->get('Stack\DI\Fixtures\PassByReferenceDependency');
+            $this->assertInstanceOf('Stack\DI\Fixtures\PassByReferenceDependency', $object);
+        }
     }
 }

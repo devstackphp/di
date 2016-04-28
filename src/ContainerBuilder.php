@@ -74,7 +74,7 @@ class ContainerBuilder
      */
     public function addDefinitions($definitions)
     {
-        if(!is_array($definitions)) {
+        if (!is_array($definitions)) {
             throw new \InvalidArgumentException(sprintf(
                 '%s parameter must be an array, %s given',
                 'ContainerBuilder::addDefinitions()',

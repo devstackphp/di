@@ -10,7 +10,6 @@
 
 namespace Stack\DI\Fixtures;
 
-
 use Interop\Container\ContainerInterface;
 use Stack\DI\Definition\Source\DefinitionSourceInterface;
 
@@ -30,7 +29,7 @@ class FakeContainer
         DefinitionSourceInterface $definitionSource,
         ContainerInterface $delegateContainer = null
     ) {
-        $this->definitionSource = $definitionSource;
+        $this->definitionSource  = $definitionSource;
         $this->delegateContainer = $delegateContainer;
     }
 }

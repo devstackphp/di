@@ -10,8 +10,6 @@
 
 namespace Stack\DI\Definition\Source;
 
-use Stack\DI\Exception\ServiceNotFoundException;
-
 /**
  * Reads DI class definitions using reflection.
  *
@@ -42,8 +40,8 @@ class Autowiring extends AbstractDefinitionSource
                 if ($constructor->getNumberOfRequiredParameters() !== count($parameters)) {
                     return;
                 }
-				
-				$object = $class->newInstanceArgs($parameters);				
+
+                $object = $class->newInstanceArgs($parameters);
                 $this->set($name, $object);
 
                 return $object;
