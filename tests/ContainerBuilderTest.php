@@ -10,7 +10,6 @@
 
 namespace Stack\DI;
 
-
 use EasyMock\EasyMock;
 use Interop\Container\ContainerInterface;
 use Stack\DI\Fixtures\FakeContainer;
@@ -21,7 +20,7 @@ use Stack\DI\Fixtures\FakeContainer;
 class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
 {
     use EasyMock;
-    
+
     public function testNotDelegateContainerDefault()
     {
         $builder = new ContainerBuilder('Stack\DI\Fixtures\FakeContainer');
@@ -36,7 +35,7 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
     {
         /** @var ContainerInterface $otherContainer */
         $otherContainer = $this->easyMock('Interop\Container\ContainerInterface');
-        $builder = new ContainerBuilder('Stack\DI\Fixtures\FakeContainer');
+        $builder        = new ContainerBuilder('Stack\DI\Fixtures\FakeContainer');
         $builder->setDelegateContainer($otherContainer);
 
         /** @var FakeContainer $container */
@@ -50,7 +49,7 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
         $builder = new ContainerBuilder('Stack\DI\Fixtures\FakeContainer');
         $builder->addDefinitions(['foo' => 'bar']);
         $builder->addDefinitions(['foofoo' => 'barbar']);
-        
+
         /** @var FakeContainer $container */
         $container = $builder->build();
 
@@ -86,7 +85,7 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
     public function testFluentInterface()
     {
         $builder = new ContainerBuilder();
-        $result = $builder->useAnnotation(false);
+        $result  = $builder->useAnnotation(false);
         $this->assertSame($builder, $result);
         $result = $builder->useAnnotation(true);
         $this->assertSame($builder, $result);
@@ -96,7 +95,7 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($builder, $result);
         /** @var ContainerInterface $otherContainer */
         $otherContainer = $this->easyMock('Interop\Container\ContainerInterface');
-        $result = $builder->setDelegateContainer($otherContainer);
+        $result         = $builder->setDelegateContainer($otherContainer);
         $this->assertSame($builder, $result);
     }
 }
