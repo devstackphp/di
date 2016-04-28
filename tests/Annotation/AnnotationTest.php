@@ -14,6 +14,9 @@ use Stack\DI\Definition\Source\Annotation;
 use Stack\DI\Fixtures\AnnotationFixture;
 use Stack\DI\Fixtures\AnnotationFixture2;
 
+/**
+ * @covers Stack\DI\Definition\Source\Annotation
+ */
 class AnnotationTest extends \PHPUnit_Framework_TestCase
 {
     private $definitions = [];

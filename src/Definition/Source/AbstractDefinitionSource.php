@@ -27,7 +27,7 @@ abstract class AbstractDefinitionSource implements DefinitionSourceInterface
      *
      * @param array $definitions
      */
-    public function __construct(array $definitions)
+    public function __construct(array $definitions = [])
     {
         $this->definitions = $definitions;
     }
