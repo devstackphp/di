@@ -42,8 +42,13 @@ class Autowiring extends AbstractDefinitionSource
                 if ($constructor->getNumberOfRequiredParameters() !== count($parameters)) {
                     return;
                 }
-
-                $object = $class->newInstanceArgs($parameters);
+				
+				if(version_compare(phpversion(), '7.0.0', '>=')) {
+					$object = new $class(eval('...') . $parameters);
+				} else {
+					$object = $class->newInstanceArgs($parameters);
+				}        
+				
                 $this->set($name, $object);
 
                 return $object;
