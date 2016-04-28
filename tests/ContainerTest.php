@@ -13,7 +13,6 @@ namespace Stack\DI;
 /**
  * Test class for Container.
  *
- * @covers Stack\DI\Container
  */
 class ContainerTest extends \PHPUnit_Framework_TestCase
 {
