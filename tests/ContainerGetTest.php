@@ -15,7 +15,6 @@ use stdClass;
 /**
  * Test class for Container.
  *
- * @covers Stack\DI\Container
  */
 class ContainerGetTest extends \PHPUnit_Framework_TestCase
 {
