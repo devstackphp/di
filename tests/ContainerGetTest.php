@@ -38,8 +38,10 @@ class ContainerGetTest extends \PHPUnit_Framework_TestCase
      */
     public function testPassByReferenceParameter()
     {
-        $container = ContainerBuilder::buildDevContainer();
-        $object = $container->get('Stack\DI\Fixtures\PassByReferenceDependency');
-        $this->assertInstanceOf('Stack\DI\Fixtures\PassByReferenceDependency', $object);
+		if(version_compare(phpversion(), '7.0.0', '<')) {
+			$container = ContainerBuilder::buildDevContainer();
+			$object = $container->get('Stack\DI\Fixtures\PassByReferenceDependency');
+			$this->assertInstanceOf('Stack\DI\Fixtures\PassByReferenceDependency', $object);
+		}
     }
 }
