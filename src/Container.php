@@ -65,6 +65,8 @@ class Container implements ContainerInterface
     ) {
         $this->definitionSource  = $definitionSource;
         $this->delegateContainer = $delegateContainer;
+
+        $this->services['container'] = $this;
     }
 
     /**
@@ -97,7 +99,9 @@ class Container implements ContainerInterface
         }
 
         if ($this->useServiceFactory) {
-            $service = $this->getServiceFromFactory($name);
+            if ($this->hasServiceInFactory($name)) {
+                $service = $this->getServiceFromFactory($name);
+            }
         }
 
         if ($this->definitionSource !== null) {
@@ -206,5 +210,10 @@ class Container implements ContainerInterface
         $delegateContainer = $this->delegateContainer ?: $this;
 
         return $serviceFactory($delegateContainer);
+    }
+
+    private function hasServiceInFactory($name)
+    {
+        return isset($this->serviceFactory[$name]);
     }
 }

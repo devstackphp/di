@@ -10,6 +10,11 @@
 
 namespace Stack\DI;
 
+/**
+ * Test class for Container.
+ *
+ * @covers Stack\DI\Container
+ */
 class ContainerTest extends \PHPUnit_Framework_TestCase
 {
     const HELLO = 'hello';
@@ -72,5 +77,14 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $container->set('foo', self::HELLO);
 
         $this->assertSame(self::HELLO, $container->get('foo'));
+    }
+
+    /**
+     * The container auto-registers itself.
+     */
+    public function testContainerIsRegistered()
+    {
+        $container = ContainerBuilder::buildDevContainer();
+        $this->assertSame($container, $container->get('Stack\DI\Container'));
     }
 }

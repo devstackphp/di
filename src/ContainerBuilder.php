@@ -68,11 +68,21 @@ class ContainerBuilder
      *
      * @param array $definitions
      *
+     * @throws \InvalidArgumentException
+     *
      * @return $this
      */
-    public function addDefinitions(array $definitions)
+    public function addDefinitions($definitions)
     {
-        $this->definitionSources = $definitions;
+        if(!is_array($definitions)) {
+            throw new \InvalidArgumentException(sprintf(
+                '%s parameter must be an array, %s given',
+                'ContainerBuilder::addDefinitions()',
+                is_object($definitions) ? get_class($definitions) : gettype($definitions)
+            ));
+        }
+
+        $this->definitionSources = array_merge($this->definitionSources, $definitions);
 
         return $this;
     }

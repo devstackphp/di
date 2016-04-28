@@ -10,6 +10,8 @@
 
 namespace Stack\DI\Definition\Source;
 
+use Stack\DI\Exception\ServiceNotFoundException;
+
 /**
  * Reads DI class definitions using reflection.
  *
