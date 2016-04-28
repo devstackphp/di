@@ -43,8 +43,7 @@ class Autowiring extends AbstractDefinitionSource
                     return;
                 }
 				
-				$object = $class->newInstanceArgs($parameters);      
-				
+				$object = $class->newInstanceArgs($parameters);				
                 $this->set($name, $object);
 
                 return $object;
