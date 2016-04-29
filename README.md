@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/devstackphp/di.svg?branch=master)](https://travis-ci.org/devstackphp/di)
 [![HHVM Status](https://img.shields.io/hhvm/devstackphp/di.svg?style=flat)](http://hhvm.h4cc.de/package/devstackphp/di)
 [![Code Climate](https://codeclimate.com/github/devstackphp/di/badges/gpa.svg)](https://codeclimate.com/github/devstackphp/di)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/devstackphp/di/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/devstackphp/di/?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/devstackphp/di/badges/quality-score.png?b=2.0)](https://scrutinizer-ci.com/g/devstackphp/di/?branch=2.0)
 [![Coverage Status](https://coveralls.io/repos/github/devstackphp/di/badge.svg?branch=2.0)](https://coveralls.io/github/devstackphp/di?branch=2.0)
 [![StyleCI](https://img.shields.io/badge/StyleCI-passed-brightgreen.svg?style=flat)](https://styleci.io/repos/48892290)
 
