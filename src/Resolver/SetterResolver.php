@@ -10,14 +10,33 @@
 
 namespace Stack\DI\Resolver;
 
+
 use Stack\DI\Exception;
 use Stack\DI\Injection\LazyInterface;
 
+/**
+ * Class SetterResolver
+ *
+ * @author Andrzej Kostrzewa <andkos11@gmail.com>
+ */
 class SetterResolver
 {
+    /**
+     * Resolve class setters params
+     *
+     * @param $class
+     * @param $setters
+     * @param array $mergeSetters
+     *
+     * @throws Exception\SetterMethodNotFound
+     *
+     * @return mixed
+     */
     public function resolve($class, $setters, $mergeSetters = [])
     {
-        $this->mergeSetters($class, $setters, $mergeSetters);
+        if (!empty($mergeSetters)) {
+            $this->mergeSetters($class, $setters, $mergeSetters);
+        }
 
         return $setters;
     }
@@ -35,10 +54,6 @@ class SetterResolver
      */
     protected function mergeSetters($class, &$setters, array $mergeSetters = [])
     {
-        if (empty($mergeSetters)) {
-            return;
-        }
-
         $setters = array_merge($setters, $mergeSetters);
         foreach ($setters as $method => $value) {
             if (!method_exists($class, $method)) {

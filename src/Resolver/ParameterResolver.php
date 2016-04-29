@@ -13,10 +13,32 @@ namespace Stack\DI\Resolver;
 use Stack\DI\Exception;
 use Stack\DI\Injection\LazyInterface;
 
+/**
+ * Class ParameterResolver
+ *
+ * @author Andrzej Kostrzewa <andkos11@gmail.com>
+ */
 class ParameterResolver
 {
+    /**
+     * Resolve class constructor params
+     * 
+     * @param $class
+     * @param $params
+     * @param array $mergeParams
+     *
+     * @throws Exception\MissingParam
+     *
+     * @return mixed
+     */
     public function resolve($class, $params, $mergeParams = [])
     {
+        if (empty($mergeParams)) {
+            $this->mergeParamsEmpty($class, $params);
+
+            return $params;
+        }
+
         $this->mergeParams($class, $params, $mergeParams);
 
         return $params;
@@ -35,12 +57,6 @@ class ParameterResolver
      */
     protected function mergeParams($class, &$params, array $mergeParams = [])
     {
-        if (empty($mergeParams)) {
-            $this->mergeParamsEmpty($class, $params);
-
-            return;
-        }
-
         $positionOfParam = 0;
         foreach ($params as $key => $value) {
             if (array_key_exists($positionOfParam, $mergeParams)) {
