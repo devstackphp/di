@@ -65,6 +65,7 @@ class ContainerBuilder
     {
         $this->containerClass = $containerClass;
     }
+
     /**
      * Add definitions to the container.
      *
@@ -78,6 +79,7 @@ class ContainerBuilder
 
         return $this;
     }
+
     /**
      * Build and return a container.
      *
@@ -103,6 +105,7 @@ class ContainerBuilder
 
         return $builder->build();
     }
+
     /**
      * Enable or disable the use of autowiring to guess injections.
      * Enabled by default.
@@ -117,6 +120,7 @@ class ContainerBuilder
 
         return $this;
     }
+
     /**
      * Enable or disable the use of annotations to guess injections.
      * Disabled by default.
@@ -131,6 +135,7 @@ class ContainerBuilder
 
         return $this;
     }
+
     /**
      * Delegate the container for dependencies.
      *

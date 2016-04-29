@@ -25,8 +25,9 @@ class Exception extends \Exception implements ContainerException
      * @param string $class The class name.
      * @param string $param The constructor param name.
      *
-     * @return Exception\MissingParam
      * @throws Exception\MissingParam
+     *
+     * @return Exception\MissingParam
      */
     public static function missingParam($class, $param)
     {
@@ -38,8 +39,9 @@ class Exception extends \Exception implements ContainerException
      *
      * @param string $service The service name.
      *
-     * @return Exception\ServiceNotFound
      * @throws Exception\ServiceNotFound
+     *
+     * @return Exception\ServiceNotFound
      */
     public static function serviceNotFound($service)
     {
@@ -49,11 +51,12 @@ class Exception extends \Exception implements ContainerException
     /**
      * A setter method was defined, but it not available on the class.
      *
-     * @param string $class The class name.
+     * @param string $class  The class name.
      * @param string $method The method name.
      *
-     * @return Exception\SetterMethodNotFound
      * @throws Exception\SetterMethodNotFound
+     *
+     * @return Exception\SetterMethodNotFound
      */
     public static function setterMethodNotFound($class, $method)
     {

@@ -14,6 +14,7 @@ class ParamsClassFixture
 {
     public $array;
     public $empty = 'not null';
+
     public function __construct(array $array, $empty)
     {
         $this->array = $array;

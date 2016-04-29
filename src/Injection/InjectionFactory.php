@@ -41,7 +41,7 @@ class InjectionFactory
      * Returns a new LazyObject.
      *
      * @param callable $callable The callable to invoke.
-     * @param array $params Arguments for the callable.
+     * @param array    $params   Arguments for the callable.
      *
      * @return LazyObject
      */
@@ -53,9 +53,9 @@ class InjectionFactory
     /**
      * Returns a new LazyNewObject.
      *
-     * @param string $class The class to instantiate.
-     * @param array $params Params for the instantiation.
-     * @param array $setters Setters for the instantiation.
+     * @param string $class   The class to instantiate.
+     * @param array  $params  Params for the instantiation.
+     * @param array  $setters Setters for the instantiation.
      *
      * @return LazyNewObject
      */
@@ -71,7 +71,7 @@ class InjectionFactory
      * Returns a new LazyGetObject.
      *
      * @param ContainerInterface $container The service container.
-     * @param string $service The service to retrieve.
+     * @param string             $service   The service to retrieve.
      *
      * @return LazyGetObject
      */

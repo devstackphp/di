@@ -34,12 +34,12 @@ class Alias
     /**
      * Alias constructor.
      *
-     * @param string $targetName
+     * @param string      $targetName
      * @param null|string $name
      */
     public function __construct($targetName, $name = null)
     {
-        $this->name = $name;
+        $this->name       = $name;
         $this->targetName = $targetName;
     }
 

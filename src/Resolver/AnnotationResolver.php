@@ -11,7 +11,7 @@
 namespace Stack\DI\Resolver;
 
 /**
- * Class AnnotationResolver
+ * Class AnnotationResolver.
  *
  * @author Andrzej Kostrzewa <andkos11@gmail.com>
  */

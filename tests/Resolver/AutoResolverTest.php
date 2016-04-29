@@ -7,13 +7,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Stack\DI\Resolver;
 
 use Stack\DI\Injection\LazyNewObject;
 
 /**
  * Class AutoResolverTest.
- *
  */
 class AutoResolverTest extends \PHPUnit_Framework_TestCase
 {
@@ -40,7 +40,7 @@ class AutoResolverTest extends \PHPUnit_Framework_TestCase
             'Stack\DI\Fixtures\ParentClassFixture' => new LazyNewObject(
                 $this->resolver,
                 'Stack\DI\Fixtures\ChildClassFixture'
-            )
+            ),
         ]);
         $actual = $this->resolver->resolve('Stack\DI\Fixtures\ResolveClassFixture');
         $this->assertInstanceOf('Stack\DI\Fixtures\ChildClassFixture', $actual->params['fake']);

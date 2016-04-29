@@ -75,6 +75,7 @@ class AliasResolver
 
     /**
      * @param string $alias
+     *
      * @return mixed
      */
     public function getAlias($alias)
@@ -84,6 +85,7 @@ class AliasResolver
 
     /**
      * @param string $alias
+     *
      * @return bool
      */
     public function hasAlias($alias)

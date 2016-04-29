@@ -65,6 +65,7 @@ class Resolver
 
     /**
      * Resolver constructor.
+     *
      * @param $reflector
      */
     public function __construct($reflector)
@@ -85,9 +86,9 @@ class Resolver
      * the configuration parameters, optionally with overrides, invoking Lazy
      * values along the way.
      *
-     * @param string $class The class to instantiate.
-     * @param array $mergeParams An array of override parameters.
-     * @param array $mergeSetters An array of override setters.
+     * @param string $class        The class to instantiate.
+     * @param array  $mergeParams  An array of override parameters.
+     * @param array  $mergeSetters An array of override setters.
      *
      * @return object
      */
@@ -102,17 +103,17 @@ class Resolver
 
         return (object) [
             'reflection' => $this->reflector->getClass($class),
-            'params' => $params,
-            'setters' => $setters,
+            'params'     => $params,
+            'setters'    => $setters,
         ];
     }
 
     /**
      * Merges the setters with overrides; also invokes Lazy values.
      *
-     * @param string $class The setters are on this class.
-     * @param array $setters The class setters.
-     * @param array $mergeSetters Override with these setters.
+     * @param string $class        The setters are on this class.
+     * @param array  $setters      The class setters.
+     * @param array  $mergeSetters Override with these setters.
      *
      * @throws Exception\SetterMethodNotFound
      *
@@ -139,9 +140,9 @@ class Resolver
     /**
      * Merges the params with overrides; also invokes Lazy values.
      *
-     * @param string $class The params are on this class.
-     * @param array $params The constructor parameters.
-     * @param array $mergeParams An array of override parameters.
+     * @param string $class       The params are on this class.
+     * @param array  $params      The constructor parameters.
+     * @param array  $mergeParams An array of override parameters.
      *
      * @throws Exception\MissingParam
      *
@@ -180,10 +181,11 @@ class Resolver
     /**
      * Load the Lazy values in params when the mergeParams are empty.
      *
-     * @param string $class The params are on this class.
-     * @param array $params The constructor parameters.
+     * @param string $class  The params are on this class.
+     * @param array  $params The constructor parameters.
      *
      * @throws Exception\MissingParam
+     *
      * @return null
      */
     protected function mergeParamsEmpty($class, &$params)
@@ -205,7 +207,7 @@ class Resolver
      * @param string $class The class name to return values for.
      *
      * @return array An array with two elements; 0 is the constructor params
-     * for the class, and 1 is the setter methods and values for the class.
+     *               for the class, and 1 is the setter methods and values for the class.
      */
     public function getUnifiedClass($class)
     {
@@ -225,18 +227,19 @@ class Resolver
 
         return $this->unifiedClass[$class];
     }
+
     /**
      * Returns the unified constructor params for a class.
      *
-     * @param string $class The class name to return values for.
-     * @param array $parent The parent unified params.
+     * @param string $class  The class name to return values for.
+     * @param array  $parent The parent unified params.
      *
      * @return array The unified params.
      */
     protected function getUnifiedClassParams($class, array $parent)
     {
         $unifiedParams = [];
-        $classParams = $this->reflector->getParameters($class);
+        $classParams   = $this->reflector->getParameters($class);
         foreach ($classParams as $classParam) {
             $unifiedParams[$classParam->name] = $this->getUnifiedClassParam(
                 $classParam,
@@ -251,22 +254,22 @@ class Resolver
     /**
      * Returns a unified param.
      *
-     * @param \ReflectionParameter $param A parameter reflection.
-     * @param string $class The class name to return values for.
-     * @param array $parent The parent unified params.
+     * @param \ReflectionParameter $param  A parameter reflection.
+     * @param string               $class  The class name to return values for.
+     * @param array                $parent The parent unified params.
      *
      * @return mixed The unified param value.
      */
     protected function getUnifiedClassParam(\ReflectionParameter $param, $class, $parent)
     {
-        $name = $param->getName();
+        $name     = $param->getName();
         $position = $param->getPosition();
 
         if (isset($this->definition[$name])) {
             return $this->definition[$name];
         }
 
-        /**
+        /*
          * @param self $self
          * @param string $class The class name to return values for.
          * @param integer $position The class param position.
@@ -294,7 +297,7 @@ class Resolver
             return false;
         };
 
-        /**
+        /*
          * @param string $name The class name to return values for.
          * @param array $parent The parent unified params.
          * @param \ReflectionParameter $param A parameter reflection.
@@ -317,15 +320,17 @@ class Resolver
         };
 
         $explicitClass = $explicit($this, $class, $position, $name);
+
         return $explicitClass ? $explicitClass : $implicitOrDefault($name, $parent, $param);
     }
+
     /**
      * Returns the unified setters for a class.
      * Class-specific setters take precedence over trait-based setters, which
      * take precedence over interface-based setters.
      *
-     * @param string $class The class name to return values for.
-     * @param array $parent The parent unified setters.
+     * @param string $class  The class name to return values for.
+     * @param array  $parent The parent unified setters.
      *
      * @return array The unified setters.
      */

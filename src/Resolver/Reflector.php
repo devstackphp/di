@@ -44,7 +44,6 @@ class Reflector
      * When serializing, ignore the Reflection-based properties.
      *
      * @return array
-     *
      */
     public function __sleep()
     {
@@ -90,7 +89,7 @@ class Reflector
         }
 
         $this->parameters[$class] = [];
-        $constructor = $this->getClass($class)->getConstructor();
+        $constructor              = $this->getClass($class)->getConstructor();
         if ($constructor) {
             $this->parameters[$class] = $constructor->getParameters();
         }

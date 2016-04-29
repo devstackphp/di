@@ -13,5 +13,6 @@ namespace Stack\DI\Fixtures;
 interface InterfaceFixture
 {
     public function setFoo($foo);
+
     public function getFoo();
 }
