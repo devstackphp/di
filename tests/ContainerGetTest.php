@@ -14,7 +14,6 @@ use stdClass;
 
 /**
  * Test class for Container.
- *
  */
 class ContainerGetTest extends \PHPUnit_Framework_TestCase
 {
