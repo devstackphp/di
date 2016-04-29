@@ -31,7 +31,7 @@ class Exception extends \Exception implements ContainerException
      */
     public static function missingParam($class, $param)
     {
-        throw new Exception\MissingParam(sprintf("Param missing: %s::\$%s", $class, $param));
+        throw new Exception\MissingParam(sprintf('Param missing: %s::$%s', $class, $param));
     }
 
     /**
@@ -60,6 +60,6 @@ class Exception extends \Exception implements ContainerException
      */
     public static function setterMethodNotFound($class, $method)
     {
-        throw new Exception\SetterMethodNotFound(sprintf("Setter method not found: %s::%s()", $class, $method));
+        throw new Exception\SetterMethodNotFound(sprintf('Setter method not found: %s::%s()', $class, $method));
     }
 }
