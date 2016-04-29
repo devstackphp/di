@@ -10,9 +10,6 @@
 
 namespace Stack\DI\Resolver;
 
-use Stack\DI\Exception;
-use Stack\DI\Injection\LazyInterface;
-
 /**
  * Resolves class creation specifics based on constructor params and setter
  * definitions, unified across class defaults, inheritance hierarchies, and
@@ -80,9 +77,9 @@ class Resolver
      */
     public function __construct(Reflector $reflector)
     {
-        $this->reflector = $reflector;
+        $this->reflector         = $reflector;
         $this->parameterResolver = new ParameterResolver();
-        $this->setterResolver = new SetterResolver();
+        $this->setterResolver    = new SetterResolver();
     }
 
     /**
@@ -110,8 +107,8 @@ class Resolver
         array $mergeSetters = []
     ) {
         list($params, $setters) = $this->getUnifiedClass($class);
-        $params = $this->parameterResolver->resolve($class, $params, $mergeParams);
-        $setters = $this->setterResolver->resolve($class, $setters, $mergeSetters);
+        $params                 = $this->parameterResolver->resolve($class, $params, $mergeParams);
+        $setters                = $this->setterResolver->resolve($class, $setters, $mergeSetters);
 
         return (object) [
             'reflection' => $this->reflector->getClass($class),
