@@ -10,7 +10,6 @@
 
 namespace Stack\DI\Resolver;
 
-
 use Stack\DI\Exception;
 use Stack\DI\Injection\LazyInterface;
 
