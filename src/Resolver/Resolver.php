@@ -146,7 +146,7 @@ class Resolver
      *
      * @throws Exception\MissingParam
      *
-     * @return string[]
+     * @return string[]|null
      */
     protected function mergeParams($class, &$params, array $mergeParams = [])
     {
@@ -269,7 +269,7 @@ class Resolver
             return $this->definition[$name];
         }
 
-        /**
+        /*
          * @param self $self
          * @param string $class The class name to return values for.
          * @param integer $position The class param position.
@@ -297,7 +297,7 @@ class Resolver
             return false;
         };
 
-        /**
+        /*
          * @param string $name The class name to return values for.
          * @param array $parent The parent unified params.
          * @param \ReflectionParameter $param A parameter reflection.
@@ -311,7 +311,7 @@ class Resolver
             if ($implicitNamed) {
                 return $parent[$name];
             }
-
+            /** @var $param \ReflectionParameter */
             if ($param->isDefaultValueAvailable()) {
                 return $param->getDefaultValue();
             }
