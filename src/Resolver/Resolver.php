@@ -146,11 +146,11 @@ class Resolver
      *
      * @throws Exception\MissingParam
      *
-     * @return array
+     * @return string[]
      */
     protected function mergeParams($class, &$params, array $mergeParams = [])
     {
-        if (!$mergeParams) {
+        if (empty($mergeParams)) {
             $this->mergeParamsEmpty($class, $params);
 
             return;
@@ -174,7 +174,7 @@ class Resolver
 
             $params[$key] = $value;
 
-            $positionOfParam += 1;
+            $positionOfParam++;
         }
     }
 
@@ -269,7 +269,7 @@ class Resolver
             return $this->definition[$name];
         }
 
-        /*
+        /**
          * @param self $self
          * @param string $class The class name to return values for.
          * @param integer $position The class param position.
@@ -297,7 +297,7 @@ class Resolver
             return false;
         };
 
-        /*
+        /**
          * @param string $name The class name to return values for.
          * @param array $parent The parent unified params.
          * @param \ReflectionParameter $param A parameter reflection.

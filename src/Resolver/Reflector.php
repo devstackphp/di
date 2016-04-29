@@ -43,7 +43,7 @@ class Reflector
     /**
      * When serializing, ignore the Reflection-based properties.
      *
-     * @return array
+     * @return string[]
      */
     public function __sleep()
     {
@@ -114,7 +114,7 @@ class Reflector
         $traits = [];
         do {
             $traits += class_uses($class);
-            $class = get_parent_class($class);
+            $class   = get_parent_class($class);
         } while ($class);
 
         while (list($trait) = each($traits)) {
