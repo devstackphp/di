@@ -121,7 +121,7 @@ class Resolver
      */
     protected function mergeSetters($class, &$setters, array $mergeSetters = [])
     {
-        if (!$mergeSetters) {
+        if (empty($mergeSetters)) {
             return;
         }
 
