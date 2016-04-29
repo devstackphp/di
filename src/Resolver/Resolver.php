@@ -64,13 +64,25 @@ class Resolver
     protected $reflector;
 
     /**
+     * @var ParameterResolver
+     */
+    protected $parameterResolver;
+
+    /**
+     * @var SetterResolver
+     */
+    protected $setterResolver;
+
+    /**
      * Resolver constructor.
      *
-     * @param $reflector
+     * @param Reflector $reflector
      */
-    public function __construct($reflector)
+    public function __construct(Reflector $reflector)
     {
         $this->reflector = $reflector;
+        $this->parameterResolver = new ParameterResolver();
+        $this->setterResolver = new SetterResolver();
     }
 
     /**
@@ -98,107 +110,14 @@ class Resolver
         array $mergeSetters = []
     ) {
         list($params, $setters) = $this->getUnifiedClass($class);
-        $this->mergeParams($class, $params, $mergeParams);
-        $this->mergeSetters($class, $setters, $mergeSetters);
+        $params = $this->parameterResolver->resolve($class, $params, $mergeParams);
+        $setters = $this->setterResolver->resolve($class, $setters, $mergeSetters);
 
         return (object) [
             'reflection' => $this->reflector->getClass($class),
             'params'     => $params,
             'setters'    => $setters,
         ];
-    }
-
-    /**
-     * Merges the setters with overrides; also invokes Lazy values.
-     *
-     * @param string $class        The setters are on this class.
-     * @param array  $setters      The class setters.
-     * @param array  $mergeSetters Override with these setters.
-     *
-     * @throws Exception\SetterMethodNotFound
-     *
-     * @return null
-     */
-    protected function mergeSetters($class, &$setters, array $mergeSetters = [])
-    {
-        if (empty($mergeSetters)) {
-            return;
-        }
-
-        $setters = array_merge($setters, $mergeSetters);
-        foreach ($setters as $method => $value) {
-            if (!method_exists($class, $method)) {
-                throw Exception::setterMethodNotFound($class, $method);
-            }
-
-            if ($value instanceof LazyInterface) {
-                $setters[$method] = $value();
-            }
-        }
-    }
-
-    /**
-     * Merges the params with overrides; also invokes Lazy values.
-     *
-     * @param string $class       The params are on this class.
-     * @param array  $params      The constructor parameters.
-     * @param array  $mergeParams An array of override parameters.
-     *
-     * @throws Exception\MissingParam
-     *
-     * @return string[]|null
-     */
-    protected function mergeParams($class, &$params, array $mergeParams = [])
-    {
-        if (empty($mergeParams)) {
-            $this->mergeParamsEmpty($class, $params);
-
-            return;
-        }
-
-        $positionOfParam = 0;
-        foreach ($params as $key => $value) {
-            if (array_key_exists($positionOfParam, $mergeParams)) {
-                $value = $mergeParams[$positionOfParam];
-            } elseif (array_key_exists($key, $mergeParams)) {
-                $value = $mergeParams[$key];
-            }
-
-            if ($value instanceof UnresolvedParam) {
-                throw Exception::missingParam($class, $value->getName());
-            }
-
-            if ($value instanceof LazyInterface) {
-                $value = $value();
-            }
-
-            $params[$key] = $value;
-
-            $positionOfParam++;
-        }
-    }
-
-    /**
-     * Load the Lazy values in params when the mergeParams are empty.
-     *
-     * @param string $class  The params are on this class.
-     * @param array  $params The constructor parameters.
-     *
-     * @throws Exception\MissingParam
-     *
-     * @return null
-     */
-    protected function mergeParamsEmpty($class, &$params)
-    {
-        foreach ($params as $key => $value) {
-            if ($value instanceof UnresolvedParam) {
-                throw Exception::missingParam($class, $value->getName());
-            }
-
-            if ($value instanceof LazyInterface) {
-                $params[$key] = $value();
-            }
-        }
     }
 
     /**
