@@ -18,7 +18,6 @@ use Stack\DI\Resolver\Resolver;
 
 /**
  * Class ContainerTest.
- *
  */
 class ContainerTest extends \PHPUnit_Framework_TestCase
 {
@@ -70,10 +69,10 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $this->container->set('foo', function () {
             return new OtherClassFixture();
         });
-        
+
         $lazy = $this->container->lazyGet('foo');
         $this->assertInstanceOf('Stack\DI\Injection\LazyGetObject', $lazy);
-        
+
         $foo = $lazy();
         $this->assertInstanceOf('Stack\DI\Fixtures\OtherClassFixture', $foo);
     }
@@ -104,11 +103,11 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $instance = $this->container->make(
             'Stack\DI\Fixtures\ChildClassFixture',
             [
-                'foo' => 'other',
+                'foo'   => 'other',
                 'other' => new OtherClassFixture(),
             ],
             [
-                'setFake' => 'fake'
+                'setFake' => 'fake',
             ]
         );
 
@@ -119,7 +118,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
 
     public function testMakeWithLazySetter()
     {
-        $di = $this->container;
+        $di     = $this->container;
         $actual = $this->container->make(
             'Stack\DI\Fixtures\ChildClassFixture',
             [
@@ -127,7 +126,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
                 new OtherClassFixture(),
             ],
             [
-                'setFake' => $di->lazyGet('Stack\DI\Fixtures\OtherClassFixture')
+                'setFake' => $di->lazyGet('Stack\DI\Fixtures\OtherClassFixture'),
             ]
         );
 
@@ -146,7 +145,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
 
     public function testMakeWithPositionalParams()
     {
-        $other = $this->container->get('Stack\DI\Fixtures\OtherClassFixture');
+        $other  = $this->container->get('Stack\DI\Fixtures\OtherClassFixture');
         $actual = $this->container->make('Stack\DI\Fixtures\ChildClassFixture', [
             'foofoo',
             $other,
@@ -157,7 +156,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('foofoo', $actual->getFoo());
 
         $actual = $this->container->make('Stack\DI\Fixtures\ChildClassFixture', [
-            0 => 'keepme',
+            0     => 'keepme',
             'foo' => 'bad',
             $other,
         ]);
@@ -175,7 +174,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $actual = $lazy();
         $expect = 'foo';
         $this->assertSame($expect, $actual);
-        $di = $this->container;
+        $di   = $this->container;
         $lazy = $this->container->call(
             'Stack\DI\Fixtures\ParentClassFixture',
             'mirror',
@@ -206,10 +205,10 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
             'Stack\DI\Exception\MissingParam',
             'Stack\DI\Fixtures\ResolveClassFixture1::$foo'
         );
-        $di = $this->container;
+        $di      = $this->container;
         $builder = new ContainerBuilder();
         $builder->addDefinitions([
-            'Stack\DI\Fixtures\OtherClassFixture' => $di->lazyGet('Stack\DI\Fixtures\OtherClassFixture')
+            'Stack\DI\Fixtures\OtherClassFixture' => $di->lazyGet('Stack\DI\Fixtures\OtherClassFixture'),
         ]);
 
         $container = $builder->build();
@@ -221,10 +220,10 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
 
     public function testResolveWithoutMissingParam()
     {
-        $di = $this->container;
+        $di      = $this->container;
         $builder = new ContainerBuilder();
         $builder->addDefinitions([
-            'fake' => $di->lazyGet('Stack\DI\Fixtures\ParentClassFixture')
+            'fake' => $di->lazyGet('Stack\DI\Fixtures\ParentClassFixture'),
         ]);
         $builder->useAutowiring(false);
         $container = $builder->build();
@@ -236,10 +235,10 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
 
     public function testUseAnnotation()
     {
-        $di = $this->container;
+        $di      = $this->container;
         $builder = new ContainerBuilder();
         $builder->addDefinitions([
-            'fake' => $di->lazyGet('Stack\DI\Fixtures\ParentClassFixture')
+            'fake' => $di->lazyGet('Stack\DI\Fixtures\ParentClassFixture'),
         ]);
         $builder->useAnnotation(true);
         $container = $builder->build();
@@ -254,12 +253,13 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $delegateContainer = ContainerBuilder::buildDevContainer();
         $delegateContainer->set('foo', function () {
             $obj = new \stdClass();
-            $obj->foo = "bar";
+            $obj->foo = 'bar';
+
             return $obj;
         });
-       
+
         $container = new Container(new InjectionFactory(new Resolver(new Reflector())), $delegateContainer);
-        $lazy = $container->lazyGet('foo');
+        $lazy      = $container->lazyGet('foo');
         $this->assertInstanceOf('Stack\DI\Injection\LazyGetObject', $lazy);
         $foo = $lazy();
         $this->assertInstanceOf('stdClass', $foo);
@@ -271,7 +271,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $builder->setDelegateContainer($delegateContainer);
 
         $container = $builder->build();
-        $actual = $container->getDelegateContainer();
+        $actual    = $container->getDelegateContainer();
         $this->assertSame($delegateContainer, $actual);
     }
 
@@ -281,7 +281,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $resolver->addSetters(['Stack\DI\Fixtures\InterfaceFixture' => ['setFoo' => 'initial']]);
         $resolver->addSetters(['Stack\DI\Fixtures\InterfaceClass2Fixture' => ['setFoo' => 'override']]);
         $container = new Container(new InjectionFactory($resolver));
-        $actual = $container->get('Stack\DI\Fixtures\InterfaceClassFixture');
+        $actual    = $container->get('Stack\DI\Fixtures\InterfaceClassFixture');
         $this->assertSame('initial', $actual->getFoo());
 
         $actual = $container->get('Stack\DI\Fixtures\InterfaceClass1Fixture');

@@ -51,9 +51,9 @@ class ObjectFactory
      * ObjectFactory constructor.
      *
      * @param Resolver $resolver
-     * @param string $class
-     * @param array $params
-     * @param array $setters
+     * @param string   $class
+     * @param array    $params
+     * @param array    $setters
      */
     public function __construct(
         Resolver $resolver,
@@ -62,9 +62,9 @@ class ObjectFactory
         array $setters = []
     ) {
         $this->resolver = $resolver;
-        $this->class = $class;
-        $this->params = $params;
-        $this->setters = $setters;
+        $this->class    = $class;
+        $this->params   = $params;
+        $this->setters  = $setters;
     }
 
     /**
@@ -75,7 +75,7 @@ class ObjectFactory
      */
     public function __invoke()
     {
-        $params = array_merge($this->params, func_get_args());
+        $params  = array_merge($this->params, func_get_args());
         $resolve = $this->resolver->resolve(
             $this->class,
             $params,

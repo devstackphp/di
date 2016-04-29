@@ -15,7 +15,6 @@ use Stack\DI\Fixtures\OtherClassFixture;
 
 /**
  * Class ResolverTest.
- *
  */
 class ResolverTest extends \PHPUnit_Framework_TestCase
 {
@@ -32,7 +31,7 @@ class ResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testReadsConstructorDefaults()
     {
-        $expect = ['foo' => 'bar'];
+        $expect        = ['foo' => 'bar'];
         $actual_params = $this->resolver->getUnifiedClass('Stack\DI\Fixtures\ParentClassFixture');
         $this->assertSame($expect, $actual_params[0]);
     }
@@ -47,7 +46,7 @@ class ResolverTest extends \PHPUnit_Framework_TestCase
     public function testHonorsParentParams()
     {
         $expect = [
-            'foo' => 'bar',
+            'foo'   => 'bar',
             'other' => null,
         ];
         $actual_params = $this->resolver->getUnifiedClass('Stack\DI\Fixtures\ChildClassFixture');
@@ -59,7 +58,7 @@ class ResolverTest extends \PHPUnit_Framework_TestCase
         $this->resolver = new Resolver(new Reflector());
         $this->resolver->addParams(['Stack\DI\Fixtures\ParentClassFixture' => ['foo' => 'zim']]);
 
-        $expect = ['foo' => 'zim'];
+        $expect        = ['foo' => 'zim'];
         $actual_params = $this->resolver->getUnifiedClass('Stack\DI\Fixtures\ParentClassFixture');
         $this->assertSame($expect, $actual_params[0]);
     }
@@ -69,7 +68,7 @@ class ResolverTest extends \PHPUnit_Framework_TestCase
         $this->resolver = new Resolver(new Reflector());
         $this->resolver->addParams(['Stack\DI\Fixtures\ParentClassFixture' => ['bar']]);
 
-        $expect = ['foo' => 'bar'];
+        $expect        = ['foo' => 'bar'];
         $actual_params = $this->resolver->getUnifiedClass('Stack\DI\Fixtures\ParentClassFixture');
         $this->assertSame($expect, $actual_params[0]);
     }
@@ -79,7 +78,7 @@ class ResolverTest extends \PHPUnit_Framework_TestCase
         $this->resolver = new Resolver(new Reflector());
         $this->resolver->addParams(['Stack\DI\Fixtures\ParentClassFixture' => ['dib']]);
         $expect = [
-            'foo' => 'dib',
+            'foo'   => 'dib',
             'other' => null,
         ];
         $actual_params = $this->resolver->getUnifiedClass('Stack\DI\Fixtures\ChildClassFixture');
@@ -94,7 +93,7 @@ class ResolverTest extends \PHPUnit_Framework_TestCase
         $this->resolver = new Resolver(new Reflector());
         $this->resolver->addSetters(['Stack\DI\Fixtures\ParentClassFixture' => ['setFake' => 'fake1']]);
         $actual_setter = $this->resolver->getUnifiedClass('Stack\DI\Fixtures\ChildClassFixture');
-        $expect = ['setFake' => 'fake1'];
+        $expect        = ['setFake' => 'fake1'];
         $this->assertSame($expect, $actual_setter[1]);
     }
 
@@ -104,7 +103,7 @@ class ResolverTest extends \PHPUnit_Framework_TestCase
         $this->resolver->addSetters(['Stack\DI\Fixtures\ParentClassFixture' => ['setFake' => 'fake1']]);
         $this->resolver->addSetters(['Stack\DI\Fixtures\ParentClassFixture' => ['setFake' => 'fake2']]);
         $actual_setter = $this->resolver->getUnifiedClass('Stack\DI\Fixtures\ChildClassFixture');
-        $expect = ['setFake' => 'fake2'];
+        $expect        = ['setFake' => 'fake2'];
         $this->assertSame($expect, $actual_setter[1]);
     }
 
@@ -113,7 +112,7 @@ class ResolverTest extends \PHPUnit_Framework_TestCase
         $this->resolver = new Resolver(new Reflector());
         $this->resolver->addSetters(['Stack\DI\Fixtures\FakeTrait' => ['setFake' => 'fake1']]);
         $actual_setter = $this->resolver->getUnifiedClass('Stack\DI\Fixtures\ClassWithTraitFixture');
-        $expect = ['setFake' => 'fake1'];
+        $expect        = ['setFake' => 'fake1'];
         $this->assertSame($expect, $actual_setter[1]);
     }
 }

@@ -35,12 +35,12 @@ class LazyObject implements LazyInterface
      * LazyObject constructor.
      *
      * @param callable $callable
-     * @param array $params
+     * @param array    $params
      */
     public function __construct($callable, array $params = [])
     {
         $this->callable = $callable;
-        $this->params = $params;
+        $this->params   = $params;
     }
 
     /**

@@ -52,16 +52,16 @@ class Container implements ContainerInterface
     /**
      * Container constructor.
      *
-     * @param InjectionFactory $injectionFactory
+     * @param InjectionFactory        $injectionFactory
      * @param ContainerInterface|null $delegateContainer
      */
     public function __construct(
         InjectionFactory $injectionFactory,
         ContainerInterface $delegateContainer = null
     ) {
-        $this->aliasResolver = new AliasResolver($this);
-        $this->injectionFactory = $injectionFactory;
-        $this->delegateContainer = $delegateContainer;
+        $this->aliasResolver          = new AliasResolver($this);
+        $this->injectionFactory       = $injectionFactory;
+        $this->delegateContainer      = $delegateContainer;
         $this->instances['Container'] = $this;
     }
 
@@ -96,11 +96,11 @@ class Container implements ContainerInterface
      * Build an entry of the container by its name.
      * This method makes the container behave like a factory.
      *
-     * @param string $name Entry name or a class name.
-     * @param array $parameters Optional parameters to use to build the entry. Use this to force specific parameters
+     * @param string $name       Entry name or a class name.
+     * @param array  $parameters Optional parameters to use to build the entry. Use this to force specific parameters
      *                           to specific values. Parameters not defined in this array will be resolved using
      *                           the container.
-     * @param array $setters Optional setters to use to build the entry.
+     * @param array  $setters    Optional setters to use to build the entry.
      *
      * @return mixed
      */
@@ -115,6 +115,7 @@ class Container implements ContainerInterface
      * Returns a lazy object that gets a service.
      *
      * @param string $name The entry name; it does not need to exist yet.
+     *
      * @return Injection\LazyGetObject
      */
     public function lazyGet($name)
@@ -126,8 +127,9 @@ class Container implements ContainerInterface
      * Call the given function using the given parameters.
      * Missing parameters will be resolved from the container.
      *
-     * @param string $name Entry name.
+     * @param string $name   Entry name.
      * @param string $method The method to call on the service object.
+     *
      * @var mixed $parameters,... Parameters to use in the method call.
      *
      * @return Injection\LazyObject
@@ -149,7 +151,7 @@ class Container implements ContainerInterface
      *
      * @param string $name Identifier of the entry to look for.
      *
-     * @return boolean
+     * @return bool
      */
     public function has($name)
     {
@@ -164,15 +166,16 @@ class Container implements ContainerInterface
     /**
      * Define an object in the container.
      *
-     * @param string $name Entry name.
-     * @param mixed $value Value definition.
+     * @param string $name  Entry name.
+     * @param mixed  $value Value definition.
+     *
      * @return $this
      */
     public function set($name, $value)
     {
         $isLazy = false;
         if ($value instanceof \Closure) {
-            $value = $this->injectionFactory->newLazyObject($value);
+            $value       = $this->injectionFactory->newLazyObject($value);
             $nameOfValue = $name;
             if (!is_string($value)) {
                 $nameOfValue = new \ReflectionObject($value());
@@ -206,14 +209,14 @@ class Container implements ContainerInterface
      *
      * @param string $name Entry name to get.
      *
-     * @return object
-     *
      * @throws Exception\ServiceNotFound when the requested service does not exist.
+     *
+     * @return object
      */
     private function getServiceInstance($name)
     {
         if (!$this->has($name)) {
-            $value = $this->injectionFactory->newLazyNewObject($name);
+            $value                 = $this->injectionFactory->newLazyNewObject($name);
             $this->services[$name] = $value;
         }
 

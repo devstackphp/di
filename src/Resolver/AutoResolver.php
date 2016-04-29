@@ -23,9 +23,9 @@ class AutoResolver extends Resolver
     /**
      * Auto-resolves params typehinted to classes.
      *
-     * @param \ReflectionParameter $param A parameter reflection.
-     * @param string $class The class name to return values for.
-     * @param array $parent The parent unified params.
+     * @param \ReflectionParameter $param  A parameter reflection.
+     * @param string               $class  The class name to return values for.
+     * @param array                $parent The parent unified params.
      *
      * @return mixed The auto-resolved param value, or UnresolvedParam.
      */
@@ -37,7 +37,7 @@ class AutoResolver extends Resolver
             return $unifiedClassParam;
         }
 
-        /**
+        /*
          * @param AutoResolver $self
          * @param \ReflectionParameter $param
          * @param mixed $unifiedClassParam

@@ -37,14 +37,13 @@ class LazyGetObject implements LazyInterface
      * LazyGetObject constructor.
      *
      * @param ContainerInterface $container
-     * @param string $service
+     * @param string             $service
      */
     public function __construct(ContainerInterface $container, $service)
     {
         $this->container = $container;
-        $this->service = $service;
+        $this->service   = $service;
     }
-
 
     /**
      * Invokes the closure to create the instance.
